@@ -39,21 +39,11 @@ def _send_message(chat_id: Union[int, str], text: str) -> bool:
 
 def _broadcast(text: str) -> None:
     """
-    Отправка сообщения:
-    - в основной канал/чат (TELEGRAM_CHAT_ID), если задан
-    - плюс всем админам (TELEGRAM_ADMINS), если заданы
+    Отправка сообщения ТОЛЬКО в основной канал/чат (TELEGRAM_CHAT_ID).
+    Админам в личку больше не шлём, чтобы не дублировать уведомления.
     """
-    targets: List[Union[int, str]] = []
-
     if TELEGRAM_CHAT_ID:
-        targets.append(TELEGRAM_CHAT_ID)
-
-    for admin_id in TELEGRAM_ADMINS or ():
-        if admin_id not in targets:
-            targets.append(admin_id)
-
-    for chat_id in targets:
-        _send_message(chat_id, text)
+        _send_message(TELEGRAM_CHAT_ID, text)
 
 
 def _format_request_block(
