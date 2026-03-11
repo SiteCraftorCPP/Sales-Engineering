@@ -1,5 +1,5 @@
 import requests
-from typing import Iterable, Optional, Union
+from typing import Iterable, Optional, Union, List
 
 from django.conf import settings
 
@@ -43,7 +43,7 @@ def _broadcast(text: str) -> None:
     - в основной канал/чат (TELEGRAM_CHAT_ID), если задан
     - плюс всем админам (TELEGRAM_ADMINS), если заданы
     """
-    targets: list[Union[int, str]] = []
+    targets: List[Union[int, str]] = []
 
     if TELEGRAM_CHAT_ID:
         targets.append(TELEGRAM_CHAT_ID)
