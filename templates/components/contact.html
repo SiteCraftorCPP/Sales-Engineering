@@ -182,14 +182,30 @@
         }
     }
 
-    /* Fix button text color on hover */
-    .c-submit.is-valid:hover {
+    /* Фиксируем внешний вид CTA‑кнопки именно в этой форме */
+    #contact .c-submit,
+    #contact .c-submit.is-valid {
+        background: #6366F1 !important;
         color: #fff !important;
+        border: none !important;
+        box-shadow: 0 10px 30px -5px rgba(99, 102, 241, 0.5);
     }
 
-    .c-submit.is-valid:hover span {
-        position: relative;
-        z-index: 5;
+    #contact .c-submit.is-valid:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 40px -5px rgba(99, 102, 241, 0.7);
+    }
+
+    /* Не даём кнопке "пропадать" при повторной невалидности */
+    #contact .c-submit[disabled] {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        background: #6366F1 !important;
+        color: #fff !important;
+        opacity: 1 !important;
+        cursor: not-allowed;
+        pointer-events: auto;
     }
 </style>
 
@@ -409,11 +425,54 @@
         }
 
         if (form) {
-            // НИЧЕГО не перехватываем, просто трекаем отправку
-            form.addEventListener('submit', function () {
+            const loader = document.getElementById('contactLoader');
+            const successLayer = document.getElementById('contactSuccess');
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
                 if (typeof reachGoal === 'function') {
                     reachGoal('form_project_submit');
                 }
+
+                if (loader) {
+                    loader.style.display = 'flex';
+                }
+
+                const formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (loader) {
+                            loader.style.display = 'none';
+                        }
+
+                        if (data && data.success) {
+                            if (successLayer) {
+                                successLayer.classList.add('visible');
+                            }
+                            form.reset();
+                            // после reset пересчитаем валидацию, чтобы кнопка снова стала неактивной
+                            if (typeof validateForm === 'function') {
+                                validateForm();
+                            }
+                        } else {
+                            console.error('Contact form error', data);
+                        }
+                    })
+                    .catch(err => {
+                        if (loader) {
+                            loader.style.display = 'none';
+                        }
+                        console.error('Contact form submit failed', err);
+                    });
             });
         }
     });

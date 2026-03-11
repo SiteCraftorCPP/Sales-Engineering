@@ -10,6 +10,9 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'CHANGE-ME-IN-PRODUCTION')
 
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
+# Явный флаг, есть ли полноценный HTTPS в проде
+USE_HTTPS = os.getenv('DJANGO_USE_HTTPS', 'True') == 'True'
+
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '79.174.77.62', 'salesengineering.ru', 'www.salesengineering.ru']
 
 INSTALLED_APPS = [
@@ -98,14 +101,14 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 WHITENOISE_USE_FINDERS = True
 
-SECURE_SSL_REDIRECT = not DEBUG
-SESSION_COOKIE_SECURE = not DEBUG
-CSRF_COOKIE_SECURE = not DEBUG
+SECURE_SSL_REDIRECT = USE_HTTPS and not DEBUG
+SESSION_COOKIE_SECURE = USE_HTTPS and not DEBUG
+CSRF_COOKIE_SECURE = USE_HTTPS and not DEBUG
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 
-if not DEBUG:
+if not DEBUG and USE_HTTPS:
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
