@@ -10,10 +10,14 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'CHANGE-ME-IN-PRODUCTION')
 
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-# Явный флаг, есть ли полноценный HTTPS в проде
-USE_HTTPS = os.getenv('DJANGO_USE_HTTPS', 'True') == 'True'
-
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '79.174.77.62', 'salesengineering.ru', 'www.salesengineering.ru']
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '79.174.77.62',
+    '83.147.247.87',
+    'salesengineering.ru',
+    'www.salesengineering.ru',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -101,14 +105,16 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 WHITENOISE_USE_FINDERS = True
 
-SECURE_SSL_REDIRECT = USE_HTTPS and not DEBUG
-SESSION_COOKIE_SECURE = USE_HTTPS and not DEBUG
-CSRF_COOKIE_SECURE = USE_HTTPS and not DEBUG
+# Редирект на HTTPS отдаём nginx, внутри Django его гасим,
+# чтобы не было переадресаций на 127.0.0.1:9001 и подобной дичи.
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 
-if not DEBUG and USE_HTTPS:
+if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
