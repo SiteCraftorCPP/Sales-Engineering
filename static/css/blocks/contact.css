@@ -939,65 +939,34 @@
 }
 
 .c-submit {
-    background: #000;
-    color: #666;
-    border: 1px solid #333;
+    background: #ffffff;
+    color: #111111;
+    border: 1px solid rgba(255, 255, 255, 0.12);
     padding: 20px;
     font-size: 0.95rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     cursor: not-allowed;
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.3s ease;
     width: 100%;
     margin-top: 10px;
     border-radius: 100px;
     position: relative;
     z-index: 1;
     overflow: hidden;
-    /* Changed to hidden to contain pseudo-element */
-}
-
-.c-submit::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 2px;
-    background: var(--lava-gradient);
-    background-size: 400% 400%;
-    animation: lavaLamp 8s infinite linear;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
-    z-index: -1;
-    /* Behind content */
 }
 
 .c-submit.is-valid {
-    background: #6366F1;
-    color: #fff;
+    background: #ffffff;
+    color: #111111;
     border-color: #6366F1;
     cursor: pointer;
-    box-shadow: 0 10px 30px -5px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.35);
 }
 
 .c-submit.is-valid:hover {
     transform: translateY(-2px);
-    background: transparent;
-    /* Show pseudo */
-    border-color: transparent;
-}
-
-.c-submit.is-valid:hover::after {
-    opacity: 1;
-    z-index: 0;
-}
-
-/* Ensure text stays on top */
-.c-submit span {
-    position: relative;
-    z-index: 2;
 }
 
 .c-legal {
