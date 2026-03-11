@@ -1,0 +1,407 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block page_title %}Активные проекты{% endblock %}
+
+{% block header_actions %}
+<a href="{% url 'dashboard_active_order_add' %}" class="btn-primary">
+    + Новый проект
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="kanban-wrapper">
+    <div class="kanban-board">
+        <!-- Accepted -->
+        <div class="kanban-column" id="col-accepted" data-status="accepted" ondrop="drop(event)"
+            ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+            <div class="column-header">
+                <div class="header-main">
+                    <span class="status-dot status-accepted"></span>
+                    <h3>Принятые</h3>
+                </div>
+                <span class="column-count" id="count-accepted">{{ columns.accepted.count }}</span>
+            </div>
+            <div class="column-cards">
+                {% for order in columns.accepted %}
+                {% include 'dashboard/includes/active_order_card.html' with order=order %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- In Progress -->
+        <div class="kanban-column" id="col-in_progress" data-status="in_progress" ondrop="drop(event)"
+            ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+            <div class="column-header">
+                <div class="header-main">
+                    <span class="status-dot status-progress"></span>
+                    <h3>В работе</h3>
+                </div>
+                <span class="column-count" id="count-in_progress">{{ columns.in_progress.count }}</span>
+            </div>
+            <div class="column-cards">
+                {% for order in columns.in_progress %}
+                {% include 'dashboard/includes/active_order_card.html' with order=order %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Testing -->
+        <div class="kanban-column" id="col-testing" data-status="testing" ondrop="drop(event)"
+            ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+            <div class="column-header">
+                <div class="header-main">
+                    <span class="status-dot status-testing"></span>
+                    <h3>Тест</h3>
+                </div>
+                <span class="column-count" id="count-testing">{{ columns.testing.count }}</span>
+            </div>
+            <div class="column-cards">
+                {% for order in columns.testing %}
+                {% include 'dashboard/includes/active_order_card.html' with order=order %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Completed -->
+        <div class="kanban-column" id="col-completed" data-status="completed" ondrop="drop(event)"
+            ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+            <div class="column-header">
+                <div class="header-main">
+                    <span class="status-dot status-completed"></span>
+                    <h3>Готово</h3>
+                </div>
+                <span class="column-count" id="count-completed">{{ columns.completed.count }}</span>
+            </div>
+            <div class="column-cards">
+                {% for order in columns.completed %}
+                {% include 'dashboard/includes/active_order_card.html' with order=order %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .kanban-wrapper {
+        margin: -40px;
+        padding: 40px;
+        overflow-x: auto;
+        background: #F8FAFC;
+        min-height: calc(100vh - 100px);
+    }
+
+    .kanban-board {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        min-width: 1000px;
+        align-items: start;
+    }
+
+    .kanban-column {
+        background: #EDF2F7;
+        border-radius: 16px;
+        display: flex;
+        flex-direction: column;
+        max-height: calc(100vh - 180px);
+        transition: all 0.2s;
+        border: 2px solid transparent;
+    }
+
+    .kanban-column.drag-over {
+        background: #E2E8F0;
+        border-color: #CBD5E1;
+        transform: scale(1.01);
+    }
+
+    .column-header {
+        padding: 16px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 16px 16px 0 0;
+        backdrop-filter: blur(4px);
+    }
+
+    .header-main {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .header-main h3 {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #475569;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+    }
+
+    .status-accepted {
+        background: #3B82F6;
+        box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+    }
+
+    .status-progress {
+        background: #EAB308;
+        box-shadow: 0 0 8px rgba(234, 179, 8, 0.4);
+    }
+
+    .status-testing {
+        background: #F97316;
+        box-shadow: 0 0 8px rgba(249, 115, 22, 0.4);
+    }
+
+    .status-completed {
+        background: #10B981;
+        box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+    }
+
+    .column-count {
+        background: #fff;
+        color: #64748B;
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 6px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .column-cards {
+        padding: 12px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    /* Custom Scrollbar for columns */
+    .column-cards::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .column-cards::-webkit-scrollbar-thumb {
+        background: #CBD5E1;
+        border-radius: 10px;
+    }
+
+    @media (max-width: 1200px) {
+        .kanban-wrapper {
+            padding: 20px;
+            margin: -20px;
+        }
+    }
+
+    /* Kanban Card Styles */
+    .kanban-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        cursor: grab;
+        position: relative;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    .kanban-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.08);
+        border-color: rgba(99, 102, 241, 0.2);
+    }
+
+    .card-body {
+        padding: 16px;
+    }
+
+    .card-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #1E293B;
+        margin: 0 0 8px 0;
+        line-height: 1.4;
+    }
+
+    .card-desc {
+        font-size: 0.85rem;
+        color: #64748B;
+        margin: 0 0 16px 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-height: 1.5;
+    }
+
+    .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 12px;
+        border-top: 1px solid #F1F5F9;
+    }
+
+    .card-files {
+        display: flex;
+        gap: 8px;
+    }
+
+    .file-link {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.65rem;
+        font-weight: 800;
+        text-decoration: none;
+        padding: 4px 8px;
+        border-radius: 6px;
+        transition: all 0.2s;
+    }
+
+    .file-link.doc {
+        background: #EEF2FF;
+        color: #4F46E5;
+    }
+
+    .file-link.img {
+        background: #ECFDF5;
+        color: #10B981;
+    }
+
+    .card-date {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.75rem;
+        color: #94A3B8;
+        font-weight: 500;
+    }
+
+    .card-delete-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        border: 1px solid #F1F5F9;
+        border-radius: 8px;
+        color: #94A3B8;
+        opacity: 0;
+        transition: all 0.2s;
+    }
+
+    .kanban-card:hover .card-delete-btn {
+        opacity: 1;
+    }
+
+    .card-delete-btn:hover {
+        color: #EF4444;
+        background: #FEF2F2;
+        border-color: #FEE2E2;
+    }
+</style>
+
+<script>
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+        ev.target.classList.add('dragging');
+        // Store source column ID to update count later
+        ev.dataTransfer.setData("sourceColId", ev.target.closest('.kanban-column').id);
+    }
+
+    function dragEnd(ev) {
+        ev.target.classList.remove('dragging');
+        document.querySelectorAll('.kanban-column').forEach(col => col.classList.remove('drag-over'));
+    }
+
+    function dragEnter(ev) {
+        ev.preventDefault();
+        if (ev.target.classList.contains('kanban-column')) {
+            ev.target.classList.add('drag-over');
+        }
+    }
+
+    function dragLeave(ev) {
+        if (ev.target.classList.contains('kanban-column')) {
+            ev.target.classList.remove('drag-over');
+        }
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        var sourceColId = ev.dataTransfer.getData("sourceColId");
+        var card = document.getElementById(data);
+        var targetColumn = ev.target.closest('.kanban-column');
+
+        targetColumn.classList.remove('drag-over');
+
+        // If dropped in same column, do nothing
+        if (targetColumn.id === sourceColId) return;
+
+        targetColumn.appendChild(card);
+
+        // Update Counters
+        updateColumnCounter(sourceColId, -1);
+        updateColumnCounter(targetColumn.id, 1);
+
+        // Update Status AJAX
+        var orderId = card.getAttribute('data-id');
+        var newStatus = targetColumn.getAttribute('data-status');
+
+        updateStatus(orderId, newStatus);
+    }
+
+    function updateColumnCounter(colId, change) {
+        var col = document.getElementById(colId);
+        var counter = col.querySelector('.column-count');
+        var current = parseInt(counter.innerText);
+        counter.innerText = current + change;
+    }
+
+    function updateStatus(orderId, status) {
+        fetch('{% url "dashboard_active_order_update_status" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                order_id: orderId,
+                status: status
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.success) {
+                    alert('Ошибка обновления статуса: ' + (data.error || 'Unknown'));
+                }
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.kanban-card');
+        cards.forEach(card => {
+            card.addEventListener('dragstart', drag);
+            card.addEventListener('dragend', dragEnd);
+        });
+    });
+</script>
+{% endblock %}

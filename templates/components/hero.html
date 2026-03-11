@@ -1,0 +1,76 @@
+{% load static %}
+<!-- Hero Section: Creative Split & Bottom Stats -->
+<section id="hero" class="hero">
+    <div class="hero-video-wrapper">
+        <video autoplay muted loop playsinline class="hero-video" preload="auto" fetchpriority="high"
+            poster="{% static 'image/hero_poster.webp' %}">
+            <source src="{% static 'video/hero_video_optimized.webm' %}" type="video/webm">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-glow-layer">
+            <div class="hero-glow hero-glow-1"></div>
+            <div class="hero-glow hero-glow-2"></div>
+        </div>
+    </div> <!-- Main Content -->
+    <div class="container hero-container-flex">
+        <div class="hero-content-left">
+            <!-- Creative Badge -->
+            <div class="hero-tag fade-in delay-1">Разработка • маркетинг • клиентская база</div>
+
+            <!-- Creative Title Mix -->
+            <h1 class="hero-title-creative fade-in delay-2">
+                <span class="block-solid">РАЗРАБОТКА СИСТЕМ</span>
+                <span class="block-outline">ПРИВЛЕЧЕНИЯ КЛИЕНТОВ</span>
+                <span class="block-small">ПОД КЛЮЧ</span>
+            </h1>
+
+            <p class="hero-desc-creative fade-in delay-3">
+                Sales Engineering — команда, специализирующаяся на комплексном развитии продаж в интернете
+            </p>
+
+            <div class="hero-buttons-creative fade-in delay-4">
+                <a href="#contact" class="btn-hero btn-hero-white" onclick="reachGoal('hero_calculate_click')"
+                    aria-label="Рассчитать проект">
+                    <span class="icon">➜</span>
+                    Рассчитать проект
+                </a>
+                <a href="#audit" class="btn-hero btn-hero-glass" onclick="reachGoal('hero_audit_click')"
+                    aria-label="Получить бесплатную консультацию">
+                    Бесплатная консультация
+                </a>
+                <a href="#process" class="btn-hero btn-hero-glass" onclick="reachGoal('hero_portfolio_click')"
+                    aria-label="Узнать, что мы предлагаем">
+                    Что мы предлагаем
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Glass Stats Bar -->
+    <div class="hero-bottom-stats fade-up delay-5">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-val">150+</div>
+                    <div class="stat-lbl">Запущенных<br>проектов</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-val">5 лет</div>
+                    <div class="stat-lbl">Опыта<br>на рынке</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-val">TOP 10</div>
+                    <div class="stat-lbl">Рейтинг<br>разработчиков</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-val">98%</div>
+                    <div class="stat-lbl">Клиентов<br>довольны</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-val">x3</div>
+                    <div class="stat-lbl">Рост продаж<br>у клиентов</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

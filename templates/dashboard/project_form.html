@@ -1,0 +1,614 @@
+{% extends 'dashboard/base.html' %}
+
+{% block page_title %}{% if project %}Редактировать проект{% else %}Добавить проект{% endif %}{% endblock %}
+
+{% block content %}
+<div class="project-editor-container">
+    <form method="post" enctype="multipart/form-data" class="dashboard-form">
+        {% csrf_token %}
+
+        <div class="editor-layout">
+            <!-- Left Column: Settings & Text -->
+            <div class="editor-main">
+                <div class="cloud-card">
+                    <div class="card-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                        </svg>
+                        <h3>Основная информация</h3>
+                    </div>
+
+                    <div class="form-grid-modern">
+                        <div class="form-group-modern">
+                            <label for="title">Название проекта</label>
+                            <input type="text" id="title" name="title" value="{{ project.title|default:'' }}" required
+                                placeholder="Напр: Внедрение чат-бота для N">
+                        </div>
+
+                        <div class="form-group-modern">
+                            <label for="category">Категория</label>
+                            <select id="category" name="category" class="cloud-select">
+                                {% for code, name in categories %}
+                                <option value="{{ code }}" {% if project.category == code %}selected{% endif %}>{{ name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group-modern col-full">
+                            <label for="description">Описание проекта</label>
+                            <textarea id="description" name="description" rows="5" required
+                                placeholder="Расскажите о проекте...">{{ project.description|default:'' }}</textarea>
+                        </div>
+
+                        <div class="form-group-modern">
+                            <label for="url">Ссылка на проект</label>
+                            <input type="url" id="url" name="url" value="{{ project.url|default:'' }}"
+                                placeholder="https://example.com">
+                        </div>
+
+                        <div class="form-group-modern">
+                            <label for="tags">Теги</label>
+                            <input type="text" id="tags" name="tags" value="{{ project.tags|default:'' }}"
+                                placeholder="UI/UX, Frontend, WebGL">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cloud-card seo-card">
+                    <div class="card-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <h3>SEO Настройки</h3>
+                    </div>
+                    <div class="form-grid-modern">
+                        <div class="form-group-modern col-full">
+                            <label for="seo_title">SEO Title (Slug)</label>
+                            <input type="text" id="seo_title" name="seo_title"
+                                value="{{ project.seo_title|default:'' }}"
+                                placeholder="Напр: creative-design-portfolio">
+                        </div>
+                        <div class="form-group-modern col-full">
+                            <label for="seo_description">SEO Meta Description</label>
+                            <textarea id="seo_description" name="seo_description" rows="2"
+                                placeholder="Краткое описание для поисковиков">{{ project.seo_description|default:'' }}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Media & Previews -->
+            <div class="editor-sidebar">
+                <div class="cloud-card media-card">
+                    <div class="card-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                            <polyline points="21 15 16 10 5 21"></polyline>
+                        </svg>
+                        <h3>Медиа и Превью</h3>
+                    </div>
+
+                    <div class="upload-zone" id="uploadZone">
+                        <input type="file" id="image" name="image" accept="image/*" {% if not project %}required{% endif %} class="file-input">
+                        <div class="upload-content">
+                            <span class="upload-icon">📸</span>
+                            <div class="upload-text">
+                                <strong>Нажмите для загрузки</strong>
+                                <span>или перетащите файл</span>
+                            </div>
+                            <small>JPG, PNG, WEBP (до 10MB)</small>
+                        </div>
+                    </div>
+
+                    <!-- Cropper UI Area -->
+                    <div id="cropSection" class="crop-container" style="display: none;">
+                        <div class="cropper-view-wrap">
+                            <img id="cropperImage" src="">
+                        </div>
+                        <div class="crop-info">
+                            <p>Настройте область для превью карточки</p>
+                            <div class="crop-actions">
+                                <button type="button" class="btn-tool" onclick="cropper.zoom(0.1)">+</button>
+                                <button type="button" class="btn-tool" onclick="cropper.zoom(-0.1)">-</button>
+                                <button type="button" class="btn-tool" onclick="cropper.rotate(90)">⟳</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Real Site Preview -->
+                    <div class="site-preview-block">
+                        <span class="preview-label">Предпросмотр на сайте</span>
+                        <div class="case-card-mockup">
+                            <div id="previewResult" class="mockup-img">
+                                {% if project.thumbnail %}
+                                <img src="{{ project.thumbnail.url }}" alt="Preview">
+                                {% else %}
+                                <div class="mockup-placeholder">Изображение появится здесь</div>
+                                {% endif %}
+                            </div>
+                            <div class="mockup-info">
+                                <span class="mockup-cat">Категория</span>
+                                <h4 class="mockup-title">Название проекта</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="thumbnail_data" name="thumbnail_data">
+                </div>
+            </div>
+        </div>
+
+        <div class="floating-actions">
+            <div class="container-actions">
+                <a href="{% url 'dashboard_projects' %}" class="btn-cancel">Отмена</a>
+                <button type="submit" id="saveButton" class="btn-save">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                        <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                        <polyline points="7 3 7 8 15 8"></polyline>
+                    </svg>
+                    Сохранить проект
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+<style>
+    :root {
+        --editor-accent: #6366F1;
+        --editor-bg-alt: #F8FAFC;
+    }
+
+    .project-editor-container {
+        padding-bottom: 100px;
+    }
+
+    .editor-layout {
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        gap: 24px;
+        align-items: start;
+    }
+
+    .cloud-card {
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 24px;
+        margin-bottom: 24px;
+    }
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #F1F5F9;
+    }
+
+    .card-header h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin: 0;
+        color: #1E293B;
+    }
+
+    .card-header svg {
+        color: var(--editor-accent);
+    }
+
+    /* Modern Grid */
+    .form-grid-modern {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .form-group-modern {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .col-full {
+        grid-column: span 2;
+    }
+
+    .form-group-modern label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #64748B;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+    }
+
+    .form-group-modern input,
+    .form-group-modern textarea,
+    .form-group-modern select {
+        padding: 12px 16px;
+        border: 1px solid #E2E8F0;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        transition: all 0.2s;
+        background: #FCFDFE;
+    }
+
+    .form-group-modern input:focus,
+    .form-group-modern textarea:focus {
+        border-color: var(--editor-accent);
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        background: #fff;
+    }
+
+    /* Media Styles */
+    .upload-zone {
+        position: relative;
+        border: 2px dashed #E2E8F0;
+        border-radius: 16px;
+        padding: 40px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        background: var(--editor-bg-alt);
+    }
+
+    .upload-zone:hover {
+        border-color: var(--editor-accent);
+        background: #fff;
+    }
+
+    .file-input {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .upload-icon {
+        font-size: 2.5rem;
+        display: block;
+        margin-bottom: 12px;
+    }
+
+    .upload-text strong {
+        display: block;
+        color: #1E293B;
+        margin-bottom: 4px;
+    }
+
+    .upload-text span {
+        color: #64748B;
+        font-size: 0.9rem;
+    }
+
+    .upload-zone small {
+        margin-top: 12px;
+        display: block;
+        color: #94A3B8;
+        font-size: 0.75rem;
+    }
+
+    .crop-container {
+        margin-top: 24px;
+        background: #000;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .crop-info {
+        background: #fff;
+        padding: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid #E2E8F0;
+    }
+
+    .crop-info p {
+        margin: 0;
+        font-size: 0.8rem;
+        color: #64748B;
+    }
+
+    .btn-tool {
+        background: #F1F5F9;
+        border: none;
+        border-radius: 6px;
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        font-weight: 700;
+        color: #1E293B;
+        transition: background 0.2s;
+    }
+
+    .btn-tool:hover {
+        background: #E2E8F0;
+    }
+
+    /* Site Preview Mockup */
+    .site-preview-block {
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid #F1F5F9;
+    }
+
+    .preview-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #94A3B8;
+        text-transform: uppercase;
+        display: block;
+        margin-bottom: 16px;
+    }
+
+    .case-card-mockup {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        border: 1px solid #F1F5F9;
+    }
+
+    .mockup-img {
+        aspect-ratio: 1.6;
+        background: #F8FAFC;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .mockup-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .mockup-placeholder {
+        color: #CBD5E1;
+        font-size: 0.85rem;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .mockup-info {
+        padding: 16px;
+    }
+
+    .mockup-cat {
+        font-size: 0.65rem;
+        color: var(--editor-accent);
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .mockup-title {
+        margin: 4px 0 0;
+        font-size: 1rem;
+        color: #1E293B;
+        font-weight: 800;
+    }
+
+    /* Floating Actions */
+    .floating-actions {
+        position: fixed;
+        bottom: 24px;
+        left: 300px;
+        /* offset for sidebar */
+        right: 40px;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 16px 24px;
+        border-radius: 20px;
+        z-index: 100;
+        animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideUp {
+        from {
+            transform: translateY(100%) scale(0.95);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+    }
+
+    .container-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 16px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .btn-cancel {
+        text-decoration: none;
+        color: #64748B;
+        font-weight: 600;
+        font-size: 0.95rem;
+        padding: 12px 24px;
+        transition: color 0.2s;
+    }
+
+    .btn-cancel:hover {
+        color: #1E293B;
+    }
+
+    .btn-save {
+        background: var(--editor-accent);
+        color: #fff;
+        border: none;
+        padding: 12px 32px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+        transition: all 0.2s;
+    }
+
+    .btn-save:hover {
+        background: #4F46E5;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+    }
+
+    /* Tablet/Mobile Adjustments */
+    @media (max-width: 1200px) {
+        .editor-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .editor-sidebar {
+            order: -1;
+        }
+
+        .floating-actions {
+            left: 40px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .form-grid-modern {
+            grid-template-columns: 1fr;
+        }
+
+        .col-full {
+            grid-column: span 1;
+        }
+
+        .dashboard-main {
+            padding: 16px;
+        }
+
+        .floating-actions {
+            left: 16px;
+            right: 16px;
+            bottom: 16px;
+            padding: 12px;
+        }
+
+        .btn-save {
+            padding: 10px 20px;
+            font-size: 0.85rem;
+        }
+    }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const imageInput = document.getElementById('image');
+        const cropperImg = document.getElementById('cropperImage');
+        const cropSection = document.getElementById('cropSection');
+        const thumbDataInput = document.getElementById('thumbnail_data');
+        const uploadZone = document.getElementById('uploadZone');
+        const form = document.querySelector('.dashboard-form');
+
+        // Sync Mockup Fields
+        const titleInput = document.getElementById('title');
+        const catSelect = document.getElementById('category');
+        const mockupTitle = document.querySelector('.mockup-title');
+        const mockupCat = document.querySelector('.mockup-cat');
+
+        titleInput.addEventListener('input', () => mockupTitle.textContent = titleInput.value || 'Название проекта');
+        catSelect.addEventListener('change', () => mockupCat.textContent = catSelect.options[catSelect.selectedIndex].text);
+
+        // Trigger initial values
+        mockupTitle.textContent = titleInput.value || 'Название проекта';
+        mockupCat.textContent = catSelect.options[catSelect.selectedIndex].text;
+
+        uploadZone.addEventListener('click', () => imageInput.click());
+
+        imageInput.addEventListener('change', function (e) {
+            const files = e.target.files;
+            if (files && files.length > 0) {
+                const file = files[0];
+                const reader = new FileReader();
+
+                uploadZone.querySelector('.upload-text strong').textContent = file.name;
+                uploadZone.querySelector('.upload-text span').textContent = "Файл выбран";
+
+                reader.onload = function (event) {
+                    if (window.cropperInst) {
+                        window.cropperInst.destroy();
+                    }
+
+                    cropperImg.src = event.target.result;
+                    cropSection.style.display = 'block';
+
+                    window.cropperInst = new Cropper(cropperImg, {
+                        aspectRatio: 1.6,
+                        viewMode: 1,
+                        dragMode: 'move',
+                        autoCropArea: 0.95,
+                        responsive: true,
+                        restore: false,
+                        guides: true,
+                        center: true,
+                        highlight: false,
+                        cropBoxMovable: true,
+                        cropBoxResizable: true,
+                        toggleDragModeOnDblclick: false,
+                        ready() {
+                            updateResult();
+                        },
+                        cropend() {
+                            updateResult();
+                        },
+                        zoom() {
+                            updateResult();
+                        }
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function updateResult() {
+            if (!window.cropperInst) return;
+            const canvas = window.cropperInst.getCroppedCanvas({
+                width: 800,
+                height: 500,
+            });
+
+            const preview = document.getElementById('previewResult');
+            preview.innerHTML = '';
+            const previewImg = document.createElement('img');
+            previewImg.src = canvas.toDataURL('image/webp');
+            previewImg.style.width = '100%';
+            preview.appendChild(previewImg);
+
+            thumbDataInput.value = canvas.toDataURL('image/webp');
+        }
+
+        form.addEventListener('submit', function (e) {
+            if (window.cropperInst) {
+                updateResult();
+            }
+        });
+    });
+</script>
+{% endblock %}

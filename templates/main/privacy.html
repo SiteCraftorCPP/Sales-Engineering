@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body_class %}nav-solid-always{% endblock %}
+
+{% block title %}Политика конфиденциальности | Sales Engineering{% endblock %}
+{% block meta_description %}Политика конфиденциальности Sales Engineering. Описание принципов обработки и защиты персональных данных пользователей сайта salesengineering.ru.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/blocks/legal.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="legalProgress"></div>
+<div class="legal-grid-bg"></div>
+
+<section class="legal-page">
+    <div class="legal-container">
+        <header class="legal-header">
+            <h1 class="legal-title">Политика <span class="outline">Конфиденциальности</span></h1>
+            <p class="legal-date">Дата обновления: 09.04.2026</p>
+        </header>
+
+        <div class="legal-content-grid">
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">ОБЩИЕ ПОЛОЖЕНИЯ</h2>
+                    <span class="legal-num">01</span>
+                </div>
+                <div class="legal-body">
+                    <p>Настоящая Политика конфиденциальности определяет порядок обработки персональных данных
+                        пользователей сайта <b>https://salesengineering.ru</b>.</p>
+                    <p><b>Оператор:</b><br>
+                        Федичкин М.Ю. (самозанятый)<br>
+                        ИНН 690309357360
+                    </p>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">ПЕРСОНАЛЬНЫЕ ДАННЫЕ</h2>
+                    <span class="legal-num">02</span>
+                </div>
+                <div class="legal-body">
+                    <p>Мы обрабатываем следующие данные:</p>
+                    <ul>
+                        <li>Имя и контактная информация;</li>
+                        <li>Email и номер телефона;</li>
+                        <li>Содержание заявок и переписки;</li>
+                        <li>IP-адрес и технические данные браузера;</li>
+                        <li>Файлы cookie.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">ЦЕЛИ ОБРАБОТКИ</h2>
+                    <span class="legal-num">03</span>
+                </div>
+                <div class="legal-body">
+                    <ul>
+                        <li>Обработка и верификация заявок;</li>
+                        <li>Оперативная связь с пользователем;</li>
+                        <li>Заключение и исполнение договоров;</li>
+                        <li>Соблюдение требований законодательства РФ;</li>
+                        <li>Аналитика и улучшение сайта.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">ПРАВОВЫЕ ОСНОВАНИЯ</h2>
+                    <span class="legal-num">04</span>
+                </div>
+                <div class="legal-body">
+                    <p>Обработка осуществляется на основании согласия пользователя, необходимости исполнения договора и
+                        требований ФЗ-152.</p>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">COOKIE И АНАЛИТИКА</h2>
+                    <span class="legal-num">05</span>
+                </div>
+                <div class="legal-body">
+                    <p>Сайт использует <b>Яндекс.Метрику</b>. Вы можете регулировать доступ данных через настройки
+                        браузера или cookie-плашку.</p>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">ПЕРЕДАЧА ДАННЫХ</h2>
+                    <span class="legal-num">06</span>
+                </div>
+                <div class="legal-body">
+                    <p>Данные могут передаваться хостинг-провайдерам, сервисам аналитики и госорганам (только по
+                        законным запросам).</p>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">СРОКИ ХРАНЕНИЯ</h2>
+                    <span class="legal-num">07</span>
+                </div>
+                <div class="legal-body">
+                    <p>Данные хранятся до завершения проекта, отзыва согласия или в сроки, установленные законом РФ.</p>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">ПРАВА ПОЛЬЗОВАТЕЛЯ</h2>
+                    <span class="legal-num">08</span>
+                </div>
+                <div class="legal-body">
+                    <p>Вы имеете право на получение выписки о данных, их исправление, блокировку или полное удаление.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include 'components/footer.html' %}
+
+<script>
+    window.onscroll = function () {
+        var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        var scrolled = (winScroll / height) * 100;
+        document.getElementById("legalProgress").style.width = scrolled + "%";
+    };
+</script>
+{% endblock %}

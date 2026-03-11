@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /thanks/
+Disallow: /private/
+
+Allow: /
+
+Host: https://salesengineering.ru
+Sitemap: https://salesengineering.ru/sitemap.xml

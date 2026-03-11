@@ -1,0 +1,40 @@
+:root {
+    --font-primary: 'NTSomic', sans-serif;
+    --font-headings: 'NTSomic', sans-serif;
+    --font-secondary: 'LTSuperior', sans-serif;
+}
+
+body {
+    font-family: var(--font-primary);
+}
+
+/* Review Avatars - Fixed from inline style which caused lint issues */
+.review-avatar-bg-1 {
+    background: #111;
+    color: #fff;
+    border: 1px solid #333;
+}
+
+.review-avatar-bg-2 {
+    background: #222;
+    color: #fff;
+    border: 1px solid #333;
+}
+
+.review-avatar-bg-3 {
+    background: #333;
+    color: #fff;
+    border: 1px solid #333;
+}
+
+.review-avatar-bg-4 {
+    background: #444;
+    color: #fff;
+    border: 1px solid #333;
+}
+
+.review-avatar-bg-5 {
+    background: #555;
+    color: #fff;
+    border: 1px solid #333;
+}

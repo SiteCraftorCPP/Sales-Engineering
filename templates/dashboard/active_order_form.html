@@ -1,0 +1,305 @@
+{% extends 'dashboard/base.html' %}
+
+{% block page_title %}Новый заказ{% endblock %}
+
+{% block content %}
+<div class="form-page-container">
+    <div class="cloud-card form-card-modern">
+        <div class="card-header-modern">
+            <div class="header-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+            </div>
+            <div class="header-text">
+                <h2>Детали нового заказа</h2>
+                <p>Заполните информацию для создания задачи на доске</p>
+            </div>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" class="dashboard-form-modern">
+            {% csrf_token %}
+
+            <div class="form-sections-grid">
+                <!-- Main Info -->
+                <div class="form-section">
+                    <div class="form-group-modern">
+                        <label for="title">Название проекта</label>
+                        <input type="text" id="title" name="title" required
+                            placeholder="Напр: Дизайн мобильного приложения">
+                    </div>
+
+                    <div class="form-group-modern">
+                        <label for="description">Описание и детали</label>
+                        <textarea id="description" name="description" rows="6" required
+                            placeholder="Опишите задачу максимально подробно..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Settings -->
+                <div class="form-section aside">
+                    <div class="form-group-modern">
+                        <label for="status">Статус на доске</label>
+                        <div class="select-wrapper-modern">
+                            <select id="status" name="status" class="modern-select">
+                                <option value="accepted">📥 Принятые в работу</option>
+                                <option value="in_progress">⚙️ В работе</option>
+                                <option value="testing">🧪 Тестирование</option>
+                                <option value="completed">✅ Завершенные</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group-modern">
+                        <label>Дополнительные файлы</label>
+                        <div class="file-uploads-stack">
+                            <div class="file-input-modern">
+                                <input type="file" id="document" name="document">
+                                <div class="file-dummy">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                        <polyline points="13 2 13 9 20 9"></polyline>
+                                    </svg>
+                                    <span>ТЗ или Договор</span>
+                                </div>
+                            </div>
+
+                            <div class="file-input-modern">
+                                <input type="file" id="image" name="image" accept="image/*">
+                                <div class="file-dummy">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                        <polyline points="21 15 16 10 5 21"></polyline>
+                                    </svg>
+                                    <span>Изображение / Референс</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-footer-modern">
+                <a href="{% url 'dashboard_active_orders' %}" class="btn-modern-secondary">Отмена</a>
+                <button type="submit" class="btn-modern-primary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Создать заказ
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .form-page-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px 0;
+    }
+
+    .form-card-modern {
+        background: #fff;
+        border-radius: 24px;
+        box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    .card-header-modern {
+        padding: 32px;
+        background: #FCFDFE;
+        border-bottom: 1px solid #F1F5F9;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .header-icon {
+        width: 48px;
+        height: 48px;
+        background: #EEF2FF;
+        color: #6366F1;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .header-text h2 {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #1E293B;
+        margin: 0;
+        letter-spacing: -0.02em;
+    }
+
+    .header-text p {
+        font-size: 0.9rem;
+        color: #64748B;
+        margin: 4px 0 0;
+    }
+
+    .dashboard-form-modern {
+        padding: 32px;
+    }
+
+    .form-sections-grid {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 40px;
+    }
+
+    .form-group-modern {
+        margin-bottom: 24px;
+    }
+
+    .form-group-modern label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #94A3B8;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 8px;
+    }
+
+    .form-group-modern input[type="text"],
+    .form-group-modern textarea,
+    .modern-select {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid #E2E8F0;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        color: #334155;
+        transition: all 0.2s;
+        background: #FCFDFE;
+    }
+
+    .form-group-modern input:focus,
+    .form-group-modern textarea:focus {
+        outline: none;
+        border-color: #6366F1;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        background: #fff;
+    }
+
+    .file-uploads-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .file-input-modern {
+        position: relative;
+        height: 48px;
+        border: 1px dashed #CBD5E1;
+        border-radius: 12px;
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+
+    .file-input-modern:hover {
+        border-color: #6366F1;
+        background: #F8FAFC;
+    }
+
+    .file-input-modern input {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        width: 100%;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    .file-dummy {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+        gap: 10px;
+        color: #64748B;
+        font-size: 0.85rem;
+        pointer-events: none;
+    }
+
+    .form-footer-modern {
+        margin-top: 20px;
+        padding-top: 32px;
+        border-top: 1px solid #F1F5F9;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .btn-modern-primary {
+        background: #6366F1;
+        color: #fff;
+        border: none;
+        padding: 12px 32px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.2s;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+    }
+
+    .btn-modern-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-modern-secondary {
+        text-decoration: none;
+        color: #94A3B8;
+        font-weight: 700;
+        font-size: 0.95rem;
+        transition: color 0.2s;
+    }
+
+    .btn-modern-secondary:hover {
+        color: #1E293B;
+    }
+
+    @media (max-width: 768px) {
+        .form-sections-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .card-header-modern {
+            padding: 24px;
+        }
+
+        .dashboard-form-modern {
+            padding: 24px;
+        }
+    }
+</style>
+
+<script>
+    // Simple file name display
+    document.querySelectorAll('.file-input-modern input').forEach(input => {
+        input.addEventListener('change', e => {
+            const fileName = e.target.files[0]?.name || 'Файл выбран';
+            e.target.parentNode.querySelector('.file-dummy span').textContent = fileName;
+            e.target.parentNode.style.borderColor = '#6366F1';
+            e.target.parentNode.style.background = '#EEF2FF';
+        });
+    });
+</script>
+{% endblock %}

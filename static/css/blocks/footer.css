@@ -1,0 +1,389 @@
+/* Mega Footer Styles */
+.footer-mega {
+    background-color: #050505;
+    color: #fff;
+    padding: var(--site-pad-y) 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 60px;
+}
+
+/* Left Side: Massive Brand */
+.footer-brand-side {
+    flex: 0 0 65%;
+    margin-left: -2%;
+}
+
+.brand-letters {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+}
+
+.brand-letters span {
+    font-family: var(--font-headings, 'Zekton', sans-serif);
+    font-size: clamp(3rem, 9vw, 140px);
+    font-weight: 900;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.02em;
+    /* Добавил небольшой зазор */
+    line-height: 1;
+    user-select: none;
+    transition: transform 0.1s linear, opacity 0.3s ease, color 0.4s ease, -webkit-text-stroke 0.4s ease;
+    display: block;
+    position: relative;
+    /* Removed will-change to save VRAM, browser handles small transforms well */
+}
+
+.brand-letters .brand-space {
+    width: 0.4em;
+}
+
+/* Pseudo-element for masking the center on hover */
+.brand-letters span::before {
+    content: attr(data-letter);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    color: #050505;
+    /* Matches Footer BG */
+    -webkit-text-stroke: 0;
+    opacity: 0;
+    /* Hidden by default */
+    pointer-events: none;
+}
+
+.brand-letters span:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.brand-letters span:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.brand-letters span:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.brand-letters span:nth-child(4) {
+    animation-delay: 0.25s;
+}
+
+.brand-letters span:nth-child(5) {
+    animation-delay: 0.3s;
+}
+
+.brand-letters span:nth-child(6) {
+    animation-delay: 0.35s;
+}
+
+.brand-letters span:nth-child(7) {
+    animation-delay: 0.4s;
+}
+
+.brand-letters span:nth-child(8) {
+    animation-delay: 0.45s;
+}
+
+.brand-letters span:hover {
+    /* 1. Make the base text a thick gradient blob */
+    color: transparent !important;
+    -webkit-text-stroke: 4px transparent !important;
+    /* Thick strokes to create the border width */
+    background: var(--lava-gradient);
+    background-size: 200% 200%;
+    animation: lavaLamp 2s infinite ease-in-out alternate;
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    /* 2. Style Adjustments */
+    text-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+    transform: scale(1.1) translateY(-10px);
+}
+
+.brand-letters span:hover::before {
+    /* 3. Show the mask on hover to create the hollow effect */
+    opacity: 1;
+}
+
+@keyframes revealLetter {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Right Side: Content */
+.footer-content-side {
+    flex: 1;
+    /* Take remaining space */
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding-top: 5px;
+    padding-left: 40px;
+    /* Add breathing room */
+}
+
+/* Links Grid */
+.footer-links-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+}
+
+.footer-block h4 {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.1em;
+    margin-bottom: 25px;
+}
+
+.footer-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.footer-nav li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.footer-nav li a:hover {
+    color: #6366F1;
+    /* Brand Violet */
+}
+
+.social-row {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.social-row a {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Bottom Bar Styles */
+.margin-top-large {
+    margin-top: 80px;
+    /* Big spacing from main content */
+}
+
+.footer-bottom-bar {
+    padding-top: 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.fbb-line {
+    display: flex;
+    flex-wrap: wrap;
+    /* Auto wrap on smaller screens, single line on huge */
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.legal-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.fbb-line .copyright {
+    color: #fff;
+    font-weight: 600;
+}
+
+.fbb-line a {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.fbb-line a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.status-link {
+    color: #4ade80 !important;
+    /* Green */
+    border-bottom: none !important;
+}
+
+.sep {
+    color: rgba(255, 255, 255, 0.15);
+    font-size: 0.7rem;
+    user-select: none;
+}
+
+/* Mobile Responsive */
+@media (max-width: 1024px) {
+    .footer-container {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .footer-brand-side {
+        margin-left: 0;
+        flex: auto;
+        width: 100%;
+        text-align: center;
+        overflow: hidden;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+
+    .brand-letters {
+        justify-content: center;
+        flex-wrap: nowrap;
+        gap: 2px;
+        overflow: hidden;
+        white-space: nowrap;
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .brand-letters span {
+        font-size: clamp(2rem, 7vw, 10vw);
+        -webkit-text-stroke-width: 0.8px;
+        opacity: 0.8;
+    }
+
+    .footer-content-side {
+        width: 100%;
+        gap: 40px;
+        padding-left: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-brand-side {
+        overflow: hidden;
+        padding: 0 16px;
+    }
+
+    .brand-letters span {
+        font-size: clamp(1.8rem, 6.5vw, 7vw);
+    }
+
+    .footer-mega {
+        padding: var(--site-pad-y) 0;
+    }
+
+    .footer-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-left: 20px;
+        padding-right: 20px;
+        margin: 0;
+    }
+
+
+
+    .footer-links-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        width: 100%;
+    }
+
+    .footer-block {
+        min-width: 0;
+    }
+
+    .footer-block:first-child {
+        text-align: left;
+    }
+
+    .footer-block:first-child .footer-nav {
+        align-items: flex-start;
+    }
+
+    .footer-block:last-child {
+        text-align: right;
+    }
+
+    .footer-block:last-child .footer-nav {
+        align-items: flex-end;
+    }
+
+    .footer-block:last-child .social-row {
+        justify-content: flex-end;
+    }
+
+    .margin-top-large {
+        margin-top: 40px;
+    }
+
+    .fbb-line {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+        font-size: 0.8rem;
+        padding-bottom: 20px;
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .legal-group {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .d-none {
+        display: none;
+    }
+
+    .brand-letters span {
+        font-size: clamp(1.5rem, 5.5vw, 2rem);
+    }
+
+    .footer-bottom-bar {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .fbb-line {
+        word-break: break-word;
+    }
+
+    .sep {
+        display: none;
+    }
+
+    .fbb-line>* {
+        margin: 0;
+    }
+}

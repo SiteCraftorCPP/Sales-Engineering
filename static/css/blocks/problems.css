@@ -1,0 +1,275 @@
+.principles-editorial {
+    padding: 80px 0;
+    background-color: #05060D;
+    color: #F9FAFB;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 
+   Ambient Effects Layer 
+   "Saturate simplicity with violet elements"
+*/
+.pe-ambient-effects {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.pe-grid-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 80px 80px;
+    background-position: center top;
+    opacity: 0.9;
+}
+
+.pe-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.4;
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+.pe-blob-1 {
+    top: -100px;
+    right: -100px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, #6366F1 0%, rgba(99, 102, 241, 0) 70%);
+}
+
+.pe-blob-2 {
+    bottom: -150px;
+    left: -150px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, #818CF8 0%, rgba(99, 102, 241, 0) 70%);
+}
+
+/* Container spacing */
+.principles-editorial .container {
+    position: relative;
+    z-index: 2;
+}
+
+.pe-header {
+    margin-bottom: 0;
+    grid-column: 1;
+}
+
+.pe-title {
+    font-family: var(--font-headings, sans-serif);
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 800;
+    line-height: 1;
+    color: #FFFFFF;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.pe-outline {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
+    display: block;
+    opacity: 0.8;
+}
+
+/* Grid Layout */
+.pe-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px 40px;
+}
+
+.pe-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+    padding-top: 30px;
+    width: 100%;
+}
+
+/* Decorative Line */
+.pe-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.7);
+    transition: width 0.4s ease, background-color 0.4s ease;
+}
+
+.pe-item:hover .pe-line {
+    width: 100%;
+    /* Expands on hover */
+    background: #6366F1;
+    /* Violet Accent */
+}
+
+/* HUGE Violet Numbers - The core "saturation" element */
+.pe-num {
+    font-family: var(--font-headings, sans-serif);
+    font-size: 8rem;
+    /* Massive */
+    font-weight: 800;
+    color: transparent;
+    -webkit-text-stroke: 2px #6366F1;
+    opacity: 0.15;
+    /* Subtle */
+    position: absolute;
+    top: -20px;
+    right: 0px;
+    line-height: 1;
+    z-index: -1;
+    transition: all 0.5s ease;
+}
+
+/* Alternative solid style if prefered:
+.pe-num {
+   color: #6366F1;
+   opacity: 0.1;
+} 
+*/
+
+.pe-item:hover .pe-num {
+    opacity: 0.3;
+    transform: translateX(-10px);
+}
+
+.pe-item h3 {
+    font-family: var(--font-headings, sans-serif);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin-bottom: 15px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+}
+
+.pe-item p {
+    font-size: 1rem;
+    color: #D1D5DB;
+    line-height: 1.6;
+    font-weight: 400;
+    max-width: 320px;
+}
+
+/* Media Queries */
+@media(max-width: 1200px) {
+    .pe-grid {
+        gap: 60px 30px;
+    }
+}
+
+@media(max-width: 1024px) {
+    .principles-editorial {
+        padding-top: 30px;
+    }
+
+    .pe-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px 20px;
+    }
+
+    .pe-header {
+        grid-column: 1 / -1;
+        margin-bottom: 30px;
+        display: block;
+        padding-top: 0;
+    }
+
+    .pe-title {
+        font-size: clamp(3.5rem, 15vw, 5rem);
+        /* Адаптивный размер */
+        line-height: 0.9;
+        word-break: break-word;
+        hyphens: auto;
+    }
+
+    .pe-outline {
+        font-size: clamp(3.5rem, 15vw, 5rem);
+        word-break: break-word;
+    }
+
+    .pe-item {
+        width: 100%;
+        padding-top: 20px;
+        overflow: hidden;
+        /* Защита от вылетания цифр */
+    }
+
+    /* Центрируем 5-ю карточку */
+    .pe-item:last-child {
+        grid-column: 1 / -1;
+        justify-self: center;
+        text-align: left;
+        max-width: 100%;
+        /* Разрешаем до полной ширины на узких экранах */
+        padding-left: 0;
+    }
+
+    .pe-item:last-child .pe-line {
+        left: 0;
+    }
+
+    .pe-item h3 {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+    }
+
+    .pe-item p {
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+
+    .pe-num {
+        font-size: 3.5rem;
+        top: -10px;
+        right: 5%;
+    }
+
+    .pe-item h3,
+    .pe-item p {
+        position: relative;
+        z-index: 1;
+    }
+}
+
+@media(max-width: 480px) {
+    .pe-grid {
+        gap: 20px 15px;
+    }
+
+    .pe-title,
+    .pe-outline {
+        font-size: 3.2rem;
+    }
+
+    .pe-num {
+        font-size: 2.2rem;
+        right: 0;
+        top: -5px;
+    }
+
+    .pe-item {
+        padding-top: 15px;
+        padding-right: 20px;
+    }
+}

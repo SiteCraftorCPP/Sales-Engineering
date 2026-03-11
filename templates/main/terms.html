@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body_class %}nav-solid-always{% endblock %}
+{% block title %}Условия использования сайта | Sales Engineering{% endblock %}
+{% block meta_description %}Условия использования сайта Sales Engineering. Правила работы с сервисами сайта и порядок взаимодействия пользователей с компанией.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/blocks/legal.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="legalProgress"></div>
+<div class="legal-grid-bg"></div>
+
+<section class="legal-page">
+    <div class="legal-container">
+        <header class="legal-header">
+            <h1 class="legal-title">Условия <span class="outline">Использования</span></h1>
+            <p class="legal-date">Дата вступления в силу: 09.04.2026</p>
+        </header>
+
+        <div class="legal-content-grid">
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">ОБЩИЕ ПОЛОЖЕНИЯ</h2>
+                    <span class="legal-num">01</span>
+                </div>
+                <div class="legal-body">
+                    <p>Настоящие Условия регулируют порядок использования сайта и взаимодействия Пользователя с
+                        Исполнителем (Sales Engineering).</p>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">ИНТЕЛЛЕКТУАЛЬНАЯ СОБСТВЕННОСТЬ</h2>
+                    <span class="legal-num">02</span>
+                </div>
+                <div class="legal-body">
+                    <p>Все материалы сайта (дизайн, код, графика, тексты) являются интеллектуальной собственностью
+                        правообладателя и охраняются законом.</p>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">ИСПОЛЬЗОВАНИЕ СЕРВИСА</h2>
+                    <span class="legal-num">03</span>
+                </div>
+                <div class="legal-body">
+                    <p>Пользователь обязуется использовать сервис исключительно в законных целях, не нарушать права и
+                        законные интересы третьих лиц, а также не использовать инструменты и решения Sales Engineering
+                        для распространения спама, незаконной рекламы или иных действий, противоречащих
+                        законодательству и правилам рекламных площадок.</p>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">ОГРАНИЧЕНИЕ ОТВЕТСТВЕННОСТИ</h2>
+                    <span class="legal-num">04</span>
+                </div>
+                <div class="legal-body">
+                    <p>Информация и материалы, размещённые на сайте, предоставляются без каких-либо гарантий их полной
+                        применимости для конкретных целей пользователя. Sales Engineering не несёт ответственности за
+                        возможные технические сбои, временную недоступность сервиса, а также за любые убытки или
+                        последствия, возникшие в результате использования размещённой информации или принятых на её
+                        основе решений.</p>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">СВЯЗЬ С ДОГОВОРОМ</h2>
+                    <span class="legal-num">05</span>
+                </div>
+                <div class="legal-body">
+                    <p>Заполнение формы на сайте не является окончательным заключением договора. Обязательства возникают
+                        после акцепта <b>Публичной оферты</b>.</p>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">ИЗМЕНЕНИЕ УСЛОВИЙ</h2>
+                    <span class="legal-num">06</span>
+                </div>
+                <div class="legal-body">
+                    <p>Правообладатель вправе обновлять данные Условия без предварительного уведомления путем публикации
+                        на этой странице.</p>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">ПРИМЕНИМОЕ ПРАВО</h2>
+                    <span class="legal-num">07</span>
+                </div>
+                <div class="legal-body">
+                    <p>Все спорные вопросы регулируются в соответствии с законодательством Российской Федерации.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include 'components/footer.html' %}
+
+<script>
+    window.onscroll = function () {
+        var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        var scrolled = (winScroll / height) * 100;
+        document.getElementById("legalProgress").style.width = scrolled + "%";
+    };
+</script>
+{% endblock %}

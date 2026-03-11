@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Спасибо за заявку | Sales Engineering{% endblock %}
+{% block meta_description %}Ваша заявка успешно отправлена. Специалист Sales Engineering свяжется с вами для обсуждения задачи и возможных решений по привлечению клиентов.{% endblock %}
+{% block meta_robots %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+
+{% block content %}
+<section class="thanks">
+    <div class="container">
+        <div class="thanks-content fade-in visible">
+            <h1 class="thanks-title">Спасибо!</h1>
+            <p class="thanks-text">Ваша заявка успешно отправлена.<br>Мы свяжемся с вами в ближайшее время.</p>
+            <a href="/" class="btn btn-primary">Вернуться на главную</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

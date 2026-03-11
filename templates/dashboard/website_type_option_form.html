@@ -1,0 +1,72 @@
+{% extends 'dashboard/base.html' %}
+
+{% block page_title %}Добавить опцию - {{ website_type.title }}{% endblock %}
+
+{% block content %}
+<div class="dashboard-form-wrapper">
+    <a href="{% url 'dashboard_website_type_edit' website_type.pk %}"
+        style="display: inline-block; margin-bottom: 20px; color: var(--color-text-secondary); text-decoration: none;">
+        ← Назад к редактированию
+    </a>
+
+    <div class="info-banner"
+        style="background: #eff6ff; border: 1px solid #bfdbfe; padding: 16px; border-radius: 12px; margin-bottom: 24px; color: #1e40af;">
+        <strong>Добавление опции</strong> для "{{ website_type.title }}".
+    </div>
+
+    <form method="post" class="dashboard-form">
+        {% csrf_token %}
+
+        <div class="section-header">
+            <h2 class="section-title">Новая опция</h2>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group col-span-2">
+                <label for="service_name">Название услуги *</label>
+                <input type="text" id="service_name" name="service_name" required placeholder="Например: Базовый пакет">
+            </div>
+
+            <div class="form-group col-span-2">
+                <!-- Empty or spacer? Or make Name full width? Let's make Name 2 cols, and maybe Order next to it? No Order is better at end. -->
+                <!-- Let's make Name full path or 2 -->
+            </div>
+            <!-- Retry: Name full width -->
+        </div>
+
+        <!-- Re-doing grid structure properly -->
+        <div class="form-grid">
+            <div class="form-group col-span-4">
+                <label for="service_name">Название услуги *</label>
+                <input type="text" id="service_name" name="service_name" required placeholder="Например: Базовый пакет">
+            </div>
+
+            <div class="form-group col-span-4">
+                <label for="description">Описание</label>
+                <textarea id="description" name="description" rows="3"
+                    placeholder="Что входит в этот вариант"></textarea>
+            </div>
+
+            <div class="form-group col-span-2">
+                <label for="time_estimate">Срок выполнения</label>
+                <input type="text" id="time_estimate" name="time_estimate" placeholder="5-7 дней">
+            </div>
+
+            <div class="form-group">
+                <label for="price">Стоимость *</label>
+                <input type="text" id="price" name="price" placeholder="от 50 000 ₽" required>
+            </div>
+
+            <div class="form-group">
+                <label for="order">Порядок</label>
+                <input type="number" id="order" name="order" value="0">
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">Добавить опцию</button>
+            <a href="{% url 'dashboard_website_type_edit' website_type.pk %}" class="btn-secondary">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,544 @@
+<style>
+    /* 1. Global Section Styles */
+    .process-pro {
+        padding: 140px 0;
+        background-color: #020202;
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Ambient Spotlights */
+    .bg-spotlight {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+        animation: floatSpotlight 10s infinite alternate ease-in-out;
+    }
+
+    .spotlight-1 {
+        top: -10%;
+        left: -10%;
+    }
+
+    .spotlight-2 {
+        bottom: -10%;
+        right: -10%;
+        background: radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, transparent 70%);
+    }
+
+    @keyframes floatSpotlight {
+        0% {
+            transform: translateY(0);
+        }
+
+        100% {
+            transform: translateY(50px);
+        }
+    }
+
+    .process-header-pro {
+        position: relative;
+        z-index: 5;
+        margin-bottom: 90px;
+        text-align: left;
+    }
+
+    .ph-supertiittle {
+        font-family: var(--font-mono, monospace);
+        font-size: 0.75rem;
+        color: #6366F1;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        display: block;
+        opacity: 0.8;
+    }
+
+    .ph-title-pro {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin: 0;
+        letter-spacing: -0.02em;
+        background: linear-gradient(135deg, #fff 30%, #555 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1.1;
+    }
+
+    .process-grid-pro {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(2, auto);
+        gap: 80px 50px;
+        position: relative;
+        max-width: 1200px;
+        margin: 0 auto;
+        z-index: 10;
+    }
+
+    /* 2. Entrance Animations */
+    .p-enter-hidden {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 1, 0.2, 1);
+    }
+
+    .p-enter-active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* 3. Card Styles */
+    .pro-card {
+        position: relative;
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        padding: 45px 35px;
+        min-height: 240px;
+        display: flex;
+        flex-direction: column;
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 5;
+        overflow: visible;
+    }
+
+    .pc-badge {
+        position: absolute;
+        top: -15px;
+        right: 30px;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #555;
+        font-family: var(--font-mono, monospace);
+        font-weight: 700;
+        font-size: 0.9rem;
+        padding: 6px 14px;
+        border-radius: 100px;
+        transition: all 0.5s ease;
+        z-index: 15;
+        overflow: hidden;
+    }
+
+    .pc-badge::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        padding: 1.5px;
+        background: var(--lava-gradient);
+        background-size: 200% 200%;
+        animation: lavaLamp 5s infinite linear;
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        pointer-events: none;
+    }
+
+    .pc-content {
+        opacity: 0.4;
+        transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .pc-title {
+        color: #fff;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .pc-desc {
+        color: #B5B5B5;
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    /* Active State (Glow) */
+    .pro-card.active {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: transparent;
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6), 0 0 30px rgba(99, 102, 241, 0.15);
+    }
+
+    /* Gradient Border Animation */
+    .pro-card::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        padding: 2px;
+        background: var(--lava-gradient);
+        background-size: 200% 200%;
+        animation: lavaLamp 5s infinite linear;
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: none;
+        z-index: 6;
+    }
+
+    .pro-card.active::after {
+        opacity: 1;
+    }
+
+    .pro-card.active .pc-badge {
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+        border-color: transparent;
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+    }
+
+    .pro-card.active .pc-badge::after {
+        opacity: 1;
+    }
+
+    .pro-card.active .pc-content {
+        opacity: 1;
+    }
+
+    /* 4. Line / Signal Styles */
+    .line-container {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.05);
+        z-index: 2;
+        overflow: hidden;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+
+    .liquid-fill {
+        position: absolute;
+        background: var(--lava-gradient);
+        background-size: 200% 200%;
+        animation: lavaLamp 5s infinite linear;
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Direction specific initial states for liquid-fill */
+    .dir-down .liquid-fill {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 0;
+    }
+
+    .dir-up .liquid-fill {
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 0;
+    }
+
+    .dir-right .liquid-fill {
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 0;
+    }
+
+    .line-container.filled .liquid-fill {
+        height: 100%;
+        width: 100%;
+    }
+
+    /* 5. Mapping */
+    .p-pos-0 {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .p-pos-1 {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .p-pos-2 {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    .p-pos-3 {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .p-pos-4 {
+        grid-column: 3;
+        grid-row: 1;
+    }
+
+    .p-pos-5 {
+        grid-column: 3;
+        grid-row: 2;
+    }
+
+    /* 6. Adaptive Media Queries */
+    @media (max-width: 1024px) {
+        .process-pro {
+            padding: 80px 0;
+        }
+
+        .process-header-pro {
+            padding-left: var(--site-pad-x, 20px);
+        }
+
+        .ph-title-pro {
+            font-size: 2.2rem;
+        }
+
+        .process-grid-pro {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            padding-left: 20px;
+        }
+
+        .pro-card {
+            min-height: auto;
+            flex-direction: row;
+            padding: 35px 20px;
+            background: transparent !important;
+            border: none;
+            backdrop-filter: none;
+            gap: 25px;
+            align-items: flex-start;
+        }
+
+        .pc-badge {
+            position: relative;
+            top: 0;
+            right: 0;
+            width: 50px;
+            height: 50px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0;
+        }
+
+        .pc-content {
+            padding-top: 8px;
+            transform: none !important;
+            opacity: 0.9;
+        }
+
+        .pro-card.active {
+            transform: none;
+        }
+
+        .pro-card.active .pc-content {
+            transform: none !important;
+        }
+
+        .line-container {
+            background: rgba(255, 255, 255, 0.1);
+        }
+    }
+</style>
+
+<section class="process-pro" id="process">
+    <div class="bg-spotlight spotlight-1"></div>
+    <div class="bg-spotlight spotlight-2"></div>
+
+    <div class="container">
+        <header class="process-header-pro p-enter-hidden" id="pHeader">
+            <span class="ph-supertiittle">ПРОЦЕСС</span>
+            <h2 class="ph-title-pro">Понятный путь <br>от идеи до результата</h2>
+        </header>
+
+        <div class="process-grid-pro" id="circuitGrid">
+            <!-- 01 -->
+            <div class="pro-card p-pos-0 p-enter-hidden" id="pc-0">
+                <div class="pc-badge">01</div>
+                <div class="pc-content">
+                    <h3 class="pc-title">Аналитика</h3>
+                    <p class="pc-desc">Изучаем бизнес, аудиторию и конкурентов. Определяем, какие каналы и инструменты будут давать заявки.</p>
+                </div>
+            </div>
+            <!-- 02 -->
+            <div class="pro-card p-pos-1 p-enter-hidden" id="pc-1">
+                <div class="pc-badge">02</div>
+                <div class="pc-content">
+                    <h3 class="pc-title">Проектирование воронки</h3>
+                    <p class="pc-desc">Маркетолог проектирует путь клиента: точки входа, сценарии общения и структуру обработки заявок.</p>
+                </div>
+            </div>
+            <!-- 03 -->
+            <div class="pro-card p-pos-2 p-enter-hidden" id="pc-2">
+                <div class="pc-badge">03</div>
+                <div class="pc-content">
+                    <h3 class="pc-title">Разработка чат-бота</h3>
+                    <p class="pc-desc">Разработчик создаёт бота для сбора заявок и автоматической обработки обращений.</p>
+                </div>
+            </div>
+            <!-- 04 -->
+            <div class="pro-card p-pos-3 p-enter-hidden" id="pc-3">
+                <div class="pc-badge">04</div>
+                <div class="pc-content">
+                    <h3 class="pc-title">Настройка рекламы</h3>
+                    <p class="pc-desc">Специалист по рекламе запускает кампании и настраивает привлечение целевой аудитории.</p>
+                </div>
+            </div>
+            <!-- 05 -->
+            <div class="pro-card p-pos-4 p-enter-hidden" id="pc-4">
+                <div class="pc-badge">05</div>
+                <div class="pc-content">
+                    <h3 class="pc-title">Интеграции и автоматизация</h3>
+                    <p class="pc-desc">Подключаем рассылки, сбор клиентской базы и автоматическую обработку заявок.</p>
+                </div>
+            </div>
+            <!-- 06 -->
+            <div class="pro-card p-pos-5 p-enter-hidden" id="pc-5">
+                <div class="pc-badge">06</div>
+                <div class="pc-content">
+                    <h3 class="pc-title">Запуск и оптимизация</h3>
+                    <p class="pc-desc">Запускаем систему, анализируем заявки и оптимизируем рекламные кампании для роста результатов.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const grid = document.getElementById('circuitGrid');
+        const cards = Array.from(document.querySelectorAll('.pro-card'));
+        const header = document.getElementById('pHeader');
+        const lines = [];
+
+        const desktopFlow = [
+            { from: 0, to: 1, dir: 'dir-down' },
+            { from: 1, to: 2, dir: 'dir-right' },
+            { from: 2, to: 3, dir: 'dir-up' },
+            { from: 3, to: 4, dir: 'dir-right' },
+            { from: 4, to: 5, dir: 'dir-down' }
+        ];
+
+        function initLines() {
+            document.querySelectorAll('.line-container').forEach(e => e.remove());
+            lines.length = 0;
+
+            const isMobile = window.innerWidth <= 1024;
+            // На мобилке линии отключаем полностью, оставляем только подсветку карточек/кругов
+            if (isMobile) {
+                return;
+            }
+
+            const gridRect = grid.getBoundingClientRect();
+            const lineWidth = 3;
+
+            const flowToUse = desktopFlow;
+
+            flowToUse.forEach((flow, i) => {
+                const b1 = cards[flow.from].querySelector('.pc-badge').getBoundingClientRect();
+                const b2 = cards[flow.to].querySelector('.pc-badge').getBoundingClientRect();
+
+                const line = document.createElement('div');
+                line.className = `line-container ${flow.dir}`;
+                const liquid = document.createElement('div');
+                liquid.className = 'liquid-fill';
+                line.appendChild(liquid);
+
+                const c1 = cards[flow.from].getBoundingClientRect();
+                const c2 = cards[flow.to].getBoundingClientRect();
+                const r1 = { l: c1.left - gridRect.left, t: c1.top - gridRect.top, w: c1.width, h: c1.height };
+                const r2 = { l: c2.left - gridRect.left, t: c2.top - gridRect.top, w: c2.width, h: c2.height };
+
+                if (flow.dir === 'dir-down') {
+                    line.style.width = lineWidth + 'px';
+                    line.style.height = (r2.t - (r1.t + r1.h)) + 40 + 'px';
+                    line.style.left = (r1.l + r1.w / 2) + 'px';
+                    line.style.top = (r1.t + r1.h - 20) + 'px';
+                } else if (flow.dir === 'dir-up') {
+                    line.style.width = lineWidth + 'px';
+                    line.style.height = (r1.t - (r2.t + r2.h)) + 40 + 'px';
+                    line.style.left = (r1.l + r1.w / 2) + 'px';
+                    line.style.top = (r2.t + r2.h - 20) + 'px';
+                } else if (flow.dir === 'dir-right') {
+                    line.style.height = lineWidth + 'px';
+                    line.style.width = (r2.l - (r1.l + r1.w)) + 40 + 'px';
+                    line.style.top = (r1.t + r1.h / 2) + 'px';
+                    line.style.left = (r1.l + r1.w - 20) + 'px';
+                }
+
+                grid.appendChild(line);
+                lines.push(line);
+            });
+        }
+
+        async function runPipeline() {
+            while (true) {
+                // Очистить все линии в начале цикла
+                lines.forEach(line => {
+                    line.classList.remove('filled');
+                    line.style.opacity = '1';
+                });
+
+                for (let i = 0; i < cards.length; i++) {
+                    // 1. Light up current
+                    cards[i].classList.add('active');
+                    await wait(2000);
+
+                    if (i < cards.length - 1) {
+                        const line = lines[i];
+                        // 2. Start Fading & Flowing (на мобилке линий нет, просто тайминг)
+                        cards[i].classList.remove('active');
+                        if (line) {
+                            line.classList.add('filled'); // Линия заполняется и остается заполненной
+                        }
+                        await wait(800);
+                        // Линия (если есть) остается заполненной до конца цикла
+                    } else {
+                        // Last card: just fade
+                        cards[i].classList.remove('active');
+                        await wait(1000);
+                    }
+                }
+                await wait(1500); // Pause before restart
+            }
+        }
+
+        function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+        // Start Observer
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                observer.unobserve(entries[0].target);
+                (async () => {
+                    header.classList.add('p-enter-active');
+                    await wait(100);
+                    for (let i = 0; i < cards.length; i++) {
+                        cards[i].classList.add('p-enter-active');
+                        await wait(60);
+                    }
+                    await wait(800);
+                    initLines();
+                    lines.forEach(l => l.style.opacity = '1');
+                    runPipeline();
+                })();
+            }
+        }, { threshold: 0.1 });
+
+        observer.observe(document.getElementById('process'));
+        window.addEventListener('resize', initLines);
+    });
+</script>

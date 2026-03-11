@@ -1,0 +1,297 @@
+{% extends 'dashboard/base.html' %}
+
+{% block page_title %}Портфолио{% endblock %}
+
+{% block header_actions %}
+<a href="{% url 'dashboard_project_add' %}" class="btn-primary">+ Добавить проект</a>
+{% endblock %}
+
+{% block content %}
+<div class="projects-grid-container">
+    <div class="projects-cards-grid">
+        {% for project in projects %}
+        <div class="cloud-card project-modern-card">
+            <div class="project-preview-wrap">
+                {% if project.thumbnail %}
+                <img src="{{ project.thumbnail.url }}" alt="{{ project.title }}">
+                {% elif project.image %}
+                <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                {% else %}
+                <div class="project-img-placeholder">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.5">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                </div>
+                {% endif %}
+                <div class="project-category-badge">{{ project.get_category_display }}</div>
+
+                <div class="project-actions-overlay">
+                    <a href="{% url 'dashboard_project_edit' project.pk %}" class="btn-action edit"
+                        title="Редактировать">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                    </a>
+                    <a href="{% url 'dashboard_project_delete' project.pk %}" class="btn-action delete" title="Удалить"
+                        onclick="return confirm('Удалить этот проект?')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                            </path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-info-modern">
+                <h3 class="project-title-modern">{{ project.title }}</h3>
+                <div class="project-tags-list">
+                    {% for tag in project.tags.split %}
+                    <span class="p-tag">#{{ tag }}</span>
+                    {% endfor %}
+                </div>
+                <div class="project-meta-bottom">
+                    <span class="project-date">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        {{ project.created_at|date:"d.m.Y" }}
+                    </span>
+                    {% if project.url %}
+                    <a href="{{ project.url }}" target="_blank" class="project-link-mini">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                        Перейти
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-state-container cloud-card">
+            <div class="empty-icon">📁</div>
+            <h3>Портфолио пока пусто</h3>
+            <p>Начните с добавления первого проекта, чтобы показать его клиентам</p>
+            <a href="{% url 'dashboard_project_add' %}" class="btn-primary-modern">Добавить проект</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .projects-grid-container {
+        padding: 20px 0;
+    }
+
+    .projects-cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 32px;
+    }
+
+    .project-modern-card {
+        padding: 0;
+        overflow: hidden;
+        border-radius: 20px;
+        background: #fff;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .project-modern-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+    }
+
+    .project-preview-wrap {
+        position: relative;
+        aspect-ratio: 16/10;
+        background: #F1F5F9;
+        overflow: hidden;
+    }
+
+    .project-preview-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s;
+    }
+
+    .project-modern-card:hover .project-preview-wrap img {
+        transform: scale(1.05);
+    }
+
+    .project-img-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #CBD5E1;
+    }
+
+    .project-category-badge {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        background: rgba(30, 41, 59, 0.7);
+        backdrop-filter: blur(8px);
+        color: #fff;
+        padding: 4px 12px;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        z-index: 2;
+    }
+
+    .project-actions-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(30, 41, 59, 0.4);
+        backdrop-filter: blur(4px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: 3;
+    }
+
+    .project-modern-card:hover .project-actions-overlay {
+        opacity: 1;
+    }
+
+    .btn-action {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        background: #fff;
+        color: #475569;
+        transition: all 0.2s;
+    }
+
+    .btn-action:hover {
+        transform: scale(1.1);
+    }
+
+    .btn-action.edit:hover {
+        color: #6366F1;
+    }
+
+    .btn-action.delete:hover {
+        color: #EF4444;
+    }
+
+    .project-info-modern {
+        padding: 24px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .project-title-modern {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #1E293B;
+        margin: 0 0 12px 0;
+        letter-spacing: -0.01em;
+    }
+
+    .project-tags-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    .p-tag {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #64748B;
+        background: #F1F5F9;
+        padding: 2px 8px;
+        border-radius: 6px;
+    }
+
+    .project-meta-bottom {
+        margin-top: auto;
+        padding-top: 16px;
+        border-top: 1px solid #F1F5F9;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .project-date {
+        font-size: 0.8rem;
+        color: #94A3B8;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 600;
+    }
+
+    .project-link-mini {
+        font-size: 0.8rem;
+        color: #6366F1;
+        text-decoration: none;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .project-link-mini:hover {
+        text-decoration: underline;
+    }
+
+    .empty-state-container {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 100px 40px;
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+    .empty-state-container h3 {
+        font-size: 1.5rem;
+        color: #1E293B;
+        margin-bottom: 12px;
+    }
+
+    .empty-state-container p {
+        color: #64748B;
+        margin-bottom: 32px;
+    }
+
+    @media (max-width: 768px) {
+        .projects-cards-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,569 @@
+{% extends 'dashboard/base.html' %}
+
+{% block page_title %}
+{% if website_type %}
+Редактирование типа
+{% else %}
+Новый тип сайта
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="form-page-container">
+    <div class="cloud-card form-card-modern">
+        <div class="card-header-modern">
+            <div class="header-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+            </div>
+            <div class="header-text">
+                <h2>{% if website_type %}Редактирование типа{% else %}Новый тип сайта{% endif %}</h2>
+                <p>Настройте категорию услуг и её параметры</p>
+            </div>
+            {% if website_type %}
+            <div class="header-status-badges">
+                {% if website_type.is_active %}<span class="badge badge-active">Активен</span>{% endif %}
+                {% if website_type.is_featured %}<span class="badge badge-featured">Выделен</span>{% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        <form method="post" class="dashboard-form-modern">
+            {% csrf_token %}
+
+            <div class="form-sections-grid">
+                <!-- Main Info -->
+                <div class="form-section">
+                    <div class="form-group-modern">
+                        <label for="title">Название типа сайта</label>
+                        <input type="text" id="title" name="title" value="{{ website_type.title|default:'' }}" required
+                            placeholder="Напр: Интернет-магазин">
+                    </div>
+
+                    <div class="form-group-modern">
+                        <label for="subtitle">Подзаголовок</label>
+                        <input type="text" id="subtitle" name="subtitle" value="{{ website_type.subtitle|default:'' }}"
+                            placeholder="Короткая фраза под названием">
+                    </div>
+
+                    <div class="form-group-modern">
+                        <label for="description">Краткое описание (для карточки)</label>
+                        <textarea id="description" name="description" rows="3" required
+                            placeholder="Максимум 2-3 предложения...">{{ website_type.description|default:'' }}</textarea>
+                    </div>
+
+                    <div class="form-group-modern">
+                        <label for="detailed_description">Детальное описание</label>
+                        <textarea id="detailed_description" name="detailed_description" rows="6"
+                            placeholder="Полная информация о типе сайта...">{{ website_type.detailed_description|default:'' }}</textarea>
+                    </div>
+
+                    <!-- SEO Section Embedded -->
+                    <div class="form-sub-section">
+                        <h4>SEO Настройки</h4>
+                        <div class="form-group-modern">
+                            <label for="seo_title">SEO Title</label>
+                            <input type="text" id="seo_title" name="seo_title"
+                                value="{{ website_type.seo_title|default:'' }}"
+                                placeholder="По умолчанию: {{ website_type.title|default:'Название' }}">
+                        </div>
+                        <div class="form-group-modern">
+                            <label for="seo_description">SEO Description</label>
+                            <textarea id="seo_description" name="seo_description" rows="2"
+                                placeholder="Мета-описание для поисковиков...">{{ website_type.seo_description|default:'' }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aside settings -->
+                <div class="form-section aside">
+                    <div class="form-group-modern">
+                        <label>Статус и Видимость</label>
+                        <div class="checkbox-stack-modern">
+                            <label class="checkbox-custom">
+                                <input type="checkbox" name="is_active" {% if is_active_checked %}checked{% endif %}>
+                                <span class="checkmark"></span>
+                                <span class="label-text">Показывать на сайте</span>
+                            </label>
+                            <label class="checkbox-custom">
+                                <input type="checkbox" name="is_featured" {% if is_featured_checked %}checked{% endif %}>
+                                <span class="checkmark"></span>
+                                <span class="label-text">Выделить (широкая карточка)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group-modern">
+                        <label for="order">Порядок отображения</label>
+                        <input type="number" id="order" name="order" value="{{ website_type.order|default:0 }}"
+                            class="modern-input-small">
+                        <p class="field-help-text">Меньшее число — первее в списке</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-footer-modern">
+                <a href="{% url 'dashboard_website_types' %}" class="btn-modern-secondary">Отмена</a>
+                <button type="submit" class="btn-modern-primary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Сохранить тип
+                </button>
+            </div>
+        </form>
+    </div>
+
+    {% if website_type %}
+    <div class="cloud-card options-card-modern" style="margin-top: 32px;">
+        <div class="card-header-flex">
+            <div class="header-info">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+                <h3>Тарифы и опции</h3>
+            </div>
+            <a href="{% url 'dashboard_website_type_option_add' website_type.pk %}" class="btn-add-option-modern">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Добавить тариф
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="modern-table">
+                <thead>
+                    <tr>
+                        <th style="width: 40%;">Услуга</th>
+                        <th style="width: 20%;">Цена</th>
+                        <th style="width: 20%;">Срок</th>
+                        <th style="width: 10%;">Порядок</th>
+                        <th style="width: 10%; text-align: right;">Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for option in website_type.pricing_options.all %}
+                    <tr>
+                        <td>
+                            <div class="option-info">
+                                <span class="option-name">{{ option.service_name }}</span>
+                                {% if option.description %}<span class="option-desc">{{ option.description|truncatechars:60 }}</span>{% endif %}
+                            </div>
+                        </td>
+                        <td><span class="price-val">{{ option.price|default:'-' }}</span></td>
+                        <td><span class="time-val">{{ option.time_estimate|default:'-' }}</span></td>
+                        <td><span class="order-badge">{{ option.order }}</span></td>
+                        <td class="actions-cell">
+                            <form method="post"
+                                action="{% url 'dashboard_website_type_option_delete' website_type.pk option.pk %}"
+                                onsubmit="return confirm('Удалить этот тариф?');">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-action delete">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path
+                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="empty-row">Тарифы еще не добавлены</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .form-page-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 20px 0;
+    }
+
+    .form-card-modern {
+        background: #fff;
+        border-radius: 24px;
+        box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    .card-header-modern {
+        padding: 32px;
+        background: #FCFDFE;
+        border-bottom: 1px solid #F1F5F9;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .header-icon {
+        width: 48px;
+        height: 48px;
+        background: #EEF2FF;
+        color: #6366F1;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .header-text h2 {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #1E293B;
+        margin: 0;
+        letter-spacing: -0.02em;
+    }
+
+    .header-text p {
+        font-size: 0.9rem;
+        color: #64748B;
+        margin: 4px 0 0;
+    }
+
+    .header-status-badges {
+        margin-left: auto;
+        display: flex;
+        gap: 8px;
+    }
+
+    .badge {
+        padding: 4px 12px;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+
+    .badge-active {
+        background: #ECFDF5;
+        color: #10B981;
+    }
+
+    .badge-featured {
+        background: #EEF2FF;
+        color: #6366F1;
+    }
+
+    .dashboard-form-modern {
+        padding: 32px;
+    }
+
+    .form-sections-grid {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 40px;
+    }
+
+    .form-group-modern {
+        margin-bottom: 24px;
+    }
+
+    .form-group-modern label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #94A3B8;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 8px;
+    }
+
+    .form-group-modern input,
+    .form-group-modern textarea {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid #E2E8F0;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        color: #334155;
+        transition: all 0.2s;
+        background: #FCFDFE;
+    }
+
+    .form-group-modern input:focus,
+    .form-group-modern textarea:focus {
+        outline: none;
+        border-color: #6366F1;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        background: #fff;
+    }
+
+    .form-sub-section {
+        margin-top: 32px;
+        padding-top: 32px;
+        border-top: 1px solid #F1F5F9;
+    }
+
+    .form-sub-section h4 {
+        font-size: 0.9rem;
+        color: #1E293B;
+        font-weight: 800;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    /* Custom Checkbox Stack */
+    .checkbox-stack-modern {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .checkbox-custom {
+        display: flex;
+        align-items: center;
+        position: relative;
+        padding-left: 32px;
+        cursor: pointer;
+        user-select: none;
+        margin-bottom: 0;
+    }
+
+    .checkbox-custom input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 20px;
+        width: 20px;
+        background-color: #F1F5F9;
+        border-radius: 6px;
+        transition: all 0.2s;
+        border: 1px solid #E2E8F0;
+    }
+
+    .checkbox-custom:hover input~.checkmark {
+        background-color: #E2E8F0;
+    }
+
+    .checkbox-custom input:checked~.checkmark {
+        background-color: #6366F1;
+        border-color: #6366F1;
+    }
+
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+        left: 7px;
+        top: 3px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+    }
+
+    .checkbox-custom input:checked~.checkmark:after {
+        display: block;
+    }
+
+    .checkbox-custom .label-text {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #475569;
+    }
+
+    /* Options Table Styles */
+    .card-header-flex {
+        padding: 24px 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #F1F5F9;
+        background: #FCFDFE;
+    }
+
+    .header-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .header-info h3 {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #1E293B;
+        margin: 0;
+    }
+
+    .header-info svg {
+        color: #6366F1;
+    }
+
+    .btn-add-option-modern {
+        background: #EEF2FF;
+        color: #6366F1;
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s;
+    }
+
+    .btn-add-option-modern:hover {
+        background: #6366F1;
+        color: #fff;
+        transform: translateY(-1px);
+    }
+
+    .modern-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .modern-table th {
+        padding: 14px 32px;
+        text-align: left;
+        font-size: 0.7rem;
+        font-weight: 800;
+        color: #94A3B8;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        background: #F8FAFC;
+    }
+
+    .modern-table td {
+        padding: 20px 32px;
+        border-bottom: 1px solid #F1F5F9;
+        vertical-align: middle;
+    }
+
+    .modern-table tr:hover td {
+        background: #FCFDFE;
+    }
+
+    .option-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .option-name {
+        font-weight: 700;
+        color: #1E293B;
+        font-size: 0.95rem;
+    }
+
+    .option-desc {
+        font-size: 0.75rem;
+        color: #94A3B8;
+    }
+
+    .price-val,
+    .time-val {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #475569;
+    }
+
+    .order-badge {
+        background: #F1F5F9;
+        color: #64748B;
+        font-size: 0.75rem;
+        font-weight: 800;
+        padding: 4px 10px;
+        border-radius: 6px;
+    }
+
+    .btn-action.delete {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        background: #FEF2F2;
+        color: #EF4444;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .btn-action.delete:hover {
+        transform: scale(1.1);
+        filter: brightness(0.95);
+    }
+
+    .form-footer-modern {
+        margin-top: 20px;
+        padding-top: 32px;
+        border-top: 1px solid #F1F5F9;
+        display: flex;
+        justify-content: flex-end;
+        gap: 16px;
+    }
+
+    .btn-modern-primary {
+        background: #6366F1;
+        color: #fff;
+        border: none;
+        padding: 12px 32px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.2s;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+    }
+
+    .btn-modern-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-modern-secondary {
+        text-decoration: none;
+        color: #94A3B8;
+        font-weight: 700;
+        font-size: 0.95rem;
+        transition: color 0.2s;
+    }
+
+    .btn-modern-secondary:hover {
+        color: #1E293B;
+    }
+
+    @media (max-width: 860px) {
+        .form-sections-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,267 @@
+{% extends 'dashboard/base.html' %}
+
+{% block page_title %}{% if review %}Редактировать отзыв{% else %}Добавить отзыв{% endif %}{% endblock %}
+
+{% block content %}
+<div class="form-page-container">
+    <div class="cloud-card form-card-modern">
+        <div class="card-header-modern">
+            <div class="header-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+            </div>
+            <div class="header-text">
+                <h2>{% if review %}Редактирование отзыва{% else %}Создание отзыва{% endif %}</h2>
+                <p>Настройте отображение клиентского опыта на сайте</p>
+            </div>
+        </div>
+
+        <form method="post" class="dashboard-form-modern">
+            {% csrf_token %}
+
+            <div class="form-sections-grid">
+                <!-- Client Info -->
+                <div class="form-section">
+                    <div class="form-group-modern">
+                        <label for="client_name">Имя клиента</label>
+                        <input type="text" id="client_name" name="client_name" required
+                            value="{{ review.client_name|default:'' }}" placeholder="Напр: Иван Иванов">
+                    </div>
+
+                    <div class="form-group-modern">
+                        <label for="client_position">Должность / Компания</label>
+                        <input type="text" id="client_position" name="client_position" required
+                            value="{{ review.client_position|default:'' }}"
+                            placeholder="Напр: Ген. директор ООО 'Вектор'">
+                    </div>
+
+                    <div class="form-group-modern">
+                        <label for="text">Текст отзыва</label>
+                        <textarea id="text" name="text" rows="8" required
+                            placeholder="Скопируйте текст отзыва сюда...">{{ review.text|default:'' }}</textarea>
+                    </div>
+                </div>
+
+                <!-- Rating & Sort -->
+                <div class="form-section aside">
+                    <div class="form-group-modern">
+                        <label>Оценка (Rating)</label>
+                        <div class="rating-select">
+                            {% for i in "54321" %}
+                            <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}" {% if review.rating|default:5|add:0 == i|add:0 %}checked{% endif %}>
+                            <label for="star{{ i }}" title="{{ i }} звезд">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                    </polygon>
+                                </svg>
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="form-group-modern">
+                        <label for="order">Порядок сортировки</label>
+                        <input type="number" id="order" name="order" value="{{ review.order|default:0 }}"
+                            class="modern-input-small">
+                        <p class="field-help-text">Меньшее число — выше в списке</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-footer-modern">
+                <a href="{% url 'dashboard_reviews' %}" class="btn-modern-secondary">Отмена</a>
+                <button type="submit" class="btn-modern-primary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Сохранить изменения
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .form-page-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px 0;
+    }
+
+    .form-card-modern {
+        background: #fff;
+        border-radius: 24px;
+        box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    .card-header-modern {
+        padding: 32px;
+        background: #FCFDFE;
+        border-bottom: 1px solid #F1F5F9;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .header-icon {
+        width: 48px;
+        height: 48px;
+        background: #EEF2FF;
+        color: #6366F1;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .header-text h2 {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #1E293B;
+        margin: 0;
+        letter-spacing: -0.02em;
+    }
+
+    .header-text p {
+        font-size: 0.9rem;
+        color: #64748B;
+        margin: 4px 0 0;
+    }
+
+    .dashboard-form-modern {
+        padding: 32px;
+    }
+
+    .form-sections-grid {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 40px;
+    }
+
+    .form-group-modern {
+        margin-bottom: 24px;
+    }
+
+    .form-group-modern label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #94A3B8;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 8px;
+    }
+
+    .form-group-modern input,
+    .form-group-modern textarea {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid #E2E8F0;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        color: #334155;
+        transition: all 0.2s;
+        background: #FCFDFE;
+    }
+
+    .form-group-modern input:focus,
+    .form-group-modern textarea:focus {
+        outline: none;
+        border-color: #6366F1;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        background: #fff;
+    }
+
+    .modern-input-small {
+        max-width: 120px;
+    }
+
+    .field-help-text {
+        font-size: 0.75rem;
+        color: #94A3B8;
+        margin-top: 6px;
+        font-weight: 500;
+    }
+
+    /* Rating Star Selection */
+    .rating-select {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .rating-select input {
+        display: none;
+    }
+
+    .rating-select label {
+        cursor: pointer;
+        color: #E2E8F0;
+        transition: color 0.2s;
+        margin-bottom: 0;
+    }
+
+    .rating-select input:checked~label,
+    .rating-select label:hover,
+    .rating-select label:hover~label {
+        color: #F59E0B;
+    }
+
+    .form-footer-modern {
+        margin-top: 20px;
+        padding-top: 32px;
+        border-top: 1px solid #F1F5F9;
+        display: flex;
+        justify-content: flex-end;
+        gap: 16px;
+    }
+
+    .btn-modern-primary {
+        background: #6366F1;
+        color: #fff;
+        border: none;
+        padding: 12px 32px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.2s;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+    }
+
+    .btn-modern-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-modern-secondary {
+        text-decoration: none;
+        color: #94A3B8;
+        font-weight: 700;
+        font-size: 0.95rem;
+        transition: color 0.2s;
+        display: flex;
+        align-items: center;
+    }
+
+    .btn-modern-secondary:hover {
+        color: #1E293B;
+    }
+
+    @media (max-width: 768px) {
+        .form-sections-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+    }
+</style>
+{% endblock %}

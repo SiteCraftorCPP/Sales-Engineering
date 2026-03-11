@@ -1,0 +1,446 @@
+<!-- Contact Section (Interactive Dot Grid) -->
+<section id="contact" class="contact-clean">
+    <!-- Dynamic Background Elements -->
+    <div class="c-ambient-bg">
+        <div class="c-blob c-blob-1"></div>
+        <div class="c-blob c-blob-2"></div>
+        <div class="c-blob c-blob-3"></div>
+        <div class="c-blob c-blob-4"></div>
+    </div>
+
+
+
+    <div class="container relative">
+        <div class="contact-master-wrap reveal">
+            <div class="clean-grid">
+                <!-- Left: Impact Typography -->
+                <div class="clean-content">
+                    <h2 class="c-title">
+                        НАЧНЕМ<br>
+                        <span class="c-outline">ПРОЕКТ?</span>
+                    </h2>
+
+                    <div class="c-contacts">
+                        <a href="https://t.me/SalesEng1neer1ng" class="c-link" onclick="reachGoal('contact_tg_click')"
+                            aria-label="Написать нам в Telegram">
+                            @SalesEng1neer1ng
+                            <span class="c-arrow" aria-hidden="true">↗</span>
+                        </a>
+                        <a href="https://vk.ru/salesengineering" class="c-link" onclick="reachGoal('contact_vk_click')"
+                            aria-label="Наше сообщество ВКонтакте">
+                            vk.ru/salesengineering
+                            <span class="c-arrow" aria-hidden="true">↗</span>
+                        </a>
+                    </div>
+
+                    <p class="c-desc">
+                        Заполните форму <span class="d-only">справа</span><span class="m-only">снизу</span> или напишите
+                        нам
+                        напрямую.
+                    </p>
+                </div>
+
+                <!-- Right: Minimalist Form -->
+                <div class="clean-form-wrap">
+                    <form method="post" action="{% url 'contact_ajax' %}" class="clean-form" id="contactForm">
+                        {% csrf_token %}
+                        <input type="hidden" name="form_type" value="project">
+
+
+
+                        <div class="c-input-group">
+                            <label>ИМЯ</label>
+                            <input type="text" name="name" placeholder="Максим" required>
+                        </div>
+
+                        <div class="c-input-group">
+                            <label>ТЕЛЕФОН (РФ)</label>
+                            <input type="tel" name="phone" id="phoneInput" placeholder="+7 (999) 000-00-00" required>
+                        </div>
+
+                        <div class="c-input-group">
+                            <label>ГДЕ ОТВЕТИТЬ?</label>
+                            <div class="form-toggle-wrapper">
+                                <div class="form-toggle contact-method-toggle">
+                                    <div class="capsule-bg"></div>
+                                    <button type="button" class="toggle-btn active" data-method="tg"
+                                        aria-label="Связаться через Telegram">Telegram</button>
+                                    <button type="button" class="toggle-btn" data-method="vk"
+                                        aria-label="Связаться через ВКонтакте">ВКонтакте</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="c-input-group" id="extraContactGroup">
+                            <label id="extraContactLabel">НИК TELEGRAM</label>
+                            <input type="text" name="extra_contact" id="extraContactInput" placeholder="@username"
+                                required>
+                        </div>
+
+                        <input type="hidden" name="contact_method" id="contactMethod" value="tg">
+
+                        <div class="c-input-group">
+                            <label>КОММЕНТАРИЙ</label>
+                            <textarea name="message" placeholder="Кратко опишите задачу или текущую ситуацию"></textarea>
+                        </div>
+
+
+
+                        <button type="submit" class="c-submit" disabled>
+                            <span>ОТПРАВИТЬ ЗАЯВКУ</span>
+                        </button>
+
+                        <div class="c-legal">
+                            Нажимая кнопку, вы соглашаетесь с <a href="{% url 'privacy' %}">политикой
+                                конфиденциальности</a>.
+                        </div>
+                    </form>
+
+                    <!-- Status Layers -->
+                    <div class="c-overlay" id="contactSuccess">
+                        <span class="c-big-icon">✓</span>
+                        <h3>ОТПРАВЛЕНО</h3>
+                        <p>Скоро свяжемся с вами</p>
+                    </div>
+
+                    <div class="c-loader" id="contactLoader">
+                        <div class="c-spinner"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+</section>
+
+<style>
+    /* Form Toggle Styles for Light Section */
+    .form-toggle-wrapper {
+        width: 100%;
+        margin-top: 12px;
+    }
+
+    .contact-method-toggle {
+        display: flex !important;
+        background: #000 !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 100px !important;
+        padding: 4px !important;
+        position: relative !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        gap: 2px !important;
+        box-sizing: border-box !important;
+    }
+
+    .contact-method-toggle .capsule-bg {
+        position: absolute;
+        background: #6366F1;
+        border-radius: 100px;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 1;
+        pointer-events: none;
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    }
+
+    .contact-method-toggle .capsule-bg.moving {
+        transform: scaleX(1.05);
+    }
+
+    .contact-method-toggle .toggle-btn {
+        background: transparent;
+        border: none;
+        padding: 1rem 0.2rem;
+        border-radius: 100px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #777;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        font-family: var(--font-mono, monospace);
+        position: relative;
+        z-index: 2;
+        flex: 1 1 0;
+        width: 25%;
+        white-space: nowrap;
+        text-align: center;
+        letter-spacing: 0.01em;
+    }
+
+    .contact-method-toggle .toggle-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .contact-method-toggle .toggle-btn.active {
+        color: #fff !important;
+    }
+
+    @media (max-width: 480px) {
+        .contact-method-toggle .toggle-btn {
+            font-size: 0.85rem;
+            padding: 1rem 0.5rem;
+        }
+    }
+
+    /* Fix button text color on hover */
+    .c-submit.is-valid:hover {
+        color: #fff !important;
+    }
+
+    .c-submit.is-valid:hover span {
+        position: relative;
+        z-index: 5;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // --- Form Toggle Logic ---
+        const form = document.getElementById('contactForm');
+        if (form) {
+            const toggleBtns = form.querySelectorAll('.toggle-btn');
+            const capsule = form.querySelector('.capsule-bg');
+            const contactInput = document.getElementById('contactInput');
+            const contactLabel = document.getElementById('contactLabel');
+
+            const methods = {
+                tg: { label: 'НИК TELEGRAM', placeholder: '@username', type: 'text', name: 'extra_contact' },
+                vk: { label: 'ССЫЛКА НА ВКОНТАКТЕ', placeholder: 'Ссылка на профиль', type: 'text', name: 'extra_contact' }
+            };
+
+            function moveCapsule(activeBtn) {
+                if (!capsule || !activeBtn) return;
+                capsule.classList.add('moving');
+                capsule.style.width = `${activeBtn.offsetWidth}px`;
+                capsule.style.height = `${activeBtn.offsetHeight}px`;
+                capsule.style.left = `${activeBtn.offsetLeft}px`;
+                capsule.style.top = `${activeBtn.offsetTop}px`;
+                setTimeout(() => { capsule.classList.remove('moving'); }, 400);
+            }
+
+            // Init width 50% because 2 buttons
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .contact-method-toggle .toggle-btn { width: 50% !important; }
+            `;
+            document.head.appendChild(style);
+
+            function initCapsule() {
+                const activeBtn = form.querySelector('.toggle-btn.active');
+                if (activeBtn && capsule) {
+                    capsule.style.transition = 'none';
+                    capsule.style.width = `${activeBtn.offsetWidth}px`;
+                    capsule.style.height = `${activeBtn.offsetHeight}px`;
+                    capsule.style.left = `${activeBtn.offsetLeft}px`;
+                    capsule.style.top = `${activeBtn.offsetTop}px`;
+                    capsule.offsetHeight;
+                    setTimeout(() => {
+                        capsule.style.transition = 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+                    }, 50);
+                }
+            }
+
+            initCapsule();
+            window.addEventListener('resize', initCapsule);
+
+            // Elements for extra contact switching
+            const extraInput = document.getElementById('extraContactInput');
+            const extraLabel = document.getElementById('extraContactLabel');
+            const contactMethodInput = document.getElementById('contactMethod');
+
+            function applyMethod(btn) {
+                const method = methods[btn.dataset.method];
+                if (method && extraInput && extraLabel) {
+                    extraLabel.textContent = method.label;
+                    extraInput.placeholder = method.placeholder;
+                    extraInput.type = method.type;
+                    extraInput.name = method.name;
+                    extraInput.setAttribute('required', 'true');
+                }
+            }
+
+            // --- IMask Integration ---
+            const phoneMask = IMask(phoneInput, {
+                mask: '+{7} (000) 000-00-00'
+            });
+
+            let extraMask = null;
+
+            function updateExtraMask(method) {
+                if (extraMask) {
+                    extraMask.destroy();
+                    extraMask = null;
+                }
+                // Маска для extra-input не нужна: Telegram/VK вводятся свободно
+            }
+
+            // Init default state
+            const defaultBtn = form.querySelector('.toggle-btn.active');
+            if (defaultBtn) {
+                applyMethod(defaultBtn);
+                updateExtraMask(defaultBtn.dataset.method);
+                if (contactMethodInput) {
+                    contactMethodInput.value = defaultBtn.dataset.method;
+                }
+            }
+
+            toggleBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    toggleBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    moveCapsule(btn);
+
+                    const method = btn.dataset.method;
+                    reachGoal('form_project_method_change');
+                    applyMethod(btn);
+                    updateExtraMask(method);
+                    if (contactMethodInput) {
+                        contactMethodInput.value = method;
+                    }
+                    setTimeout(validateForm, 50);
+                });
+            });
+
+            // Validation Logic
+            const submitBtn = form.querySelector('.c-submit');
+
+            const validators = {
+                tg: /^(@[a-zA-Z0-9_]{5,32}|https?:\/\/t\.me\/[a-zA-Z0-9_]{5,32})$/,
+                // Разрешаем vk.com И vk.ru, с http/https или без
+                vk: /^(https?:\/\/)?(www\.)?(vk\.com|vk\.ru)\/[A-Za-z0-9_\.]+\/?$/i,
+                name: /.{2,}/
+            };
+
+            function validateForm() {
+                const inputs = form.querySelectorAll('input:not([type="hidden"]), textarea');
+                let isValid = true;
+
+                inputs.forEach(input => {
+                    const val = input.value.trim();
+                    const name = input.name;
+
+                    // Required check
+                    if (input.hasAttribute('required') && !val) {
+                        isValid = false;
+                        return;
+                    }
+
+                    // Strict checks
+                    if (val) {
+                        if (name === 'phone') {
+                            if (!phoneMask.masked.isComplete) isValid = false;
+                        }
+
+                        if (name === 'extra_contact') {
+                            const activeMethod = form.querySelector('.toggle-btn.active').dataset.method;
+                            if (activeMethod === 'tg' && !validators.tg.test(val)) isValid = false;
+                            if (activeMethod === 'vk' && !validators.vk.test(val)) isValid = false;
+                        }
+                    }
+                });
+
+                if (isValid) {
+                    submitBtn.classList.add('is-valid');
+                    submitBtn.removeAttribute('disabled');
+                } else {
+                    submitBtn.classList.remove('is-valid');
+                    submitBtn.setAttribute('disabled', 'true');
+                }
+            }
+
+            // Real-time validation listeners
+            form.querySelectorAll('input, textarea').forEach(input => {
+                input.addEventListener('input', validateForm);
+                // Also listen to IMask events indirectly via input
+            });
+
+            // Listen to mask accept
+            phoneMask.on('accept', validateForm);
+            if (extraMask) extraMask.on('accept', validateForm); // Re-bind in helper if needed, but input event handles change mostly correctly
+
+
+            // Initial check
+            validateForm();
+
+            // Re-validate on method switch (required attrs change)
+            toggleBtns.forEach(btn => {
+                btn.addEventListener('click', () => setTimeout(validateForm, 50));
+            });
+
+            // Track form start
+            form.querySelectorAll('input, select, textarea').forEach(input => {
+                input.addEventListener('focus', () => {
+                    if (!form.dataset.started) {
+                        reachGoal('form_project_start');
+                        form.dataset.started = 'true';
+                    }
+                }, { once: true });
+            });
+        }
+
+
+
+        // --- Form Logic ---
+        const dd = document.getElementById('cleanDropdown');
+        const hidden = document.getElementById('hiddenProjectSelect');
+
+        if (dd) {
+            const trigger = dd.querySelector('.c-trigger');
+            const opts = dd.querySelectorAll('.c-opt');
+            const val = dd.querySelector('.c-val');
+
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dd.classList.toggle('open');
+            });
+
+            opts.forEach(o => {
+                o.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    val.textContent = o.textContent.trim();
+                    val.classList.remove('placeholder');
+                    hidden.value = o.dataset.value;
+                    reachGoal('form_project_type_select');
+                    dd.classList.remove('open');
+                });
+            });
+            document.addEventListener('click', () => dd.classList.remove('open'));
+        }
+
+        if (form) {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const loader = document.getElementById('contactLoader');
+                const success = document.getElementById('contactSuccess');
+
+                loader.style.display = 'flex';
+
+                fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                })
+                    .then(r => r.json())
+                    .then(d => {
+                        if (d.success) {
+                            reachGoal('form_project_submit');
+                            setTimeout(() => {
+                                loader.style.display = 'none';
+                                form.style.opacity = '0';
+                                form.style.visibility = 'hidden';
+                                success.classList.add('visible');
+                            }, 800);
+                        } else {
+                            loader.style.display = 'none';
+                            alert('Error checking fields.');
+                        }
+                    })
+                    .catch(e => {
+                        console.error(e);
+                        loader.style.display = 'none';
+                    });
+            });
+        }
+    });
+</script>

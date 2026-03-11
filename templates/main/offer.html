@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body_class %}nav-solid-always{% endblock %}
+
+{% block title %}Договор-оферта | Sales Engineering{% endblock %}
+{% block meta_description %}Публичная оферта Sales Engineering. Условия оказания услуг по внедрению систем привлечения клиентов, настройке рекламы и автоматизации работы с клиентской базой.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/blocks/legal.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="legalProgress"></div>
+<div class="legal-grid-bg"></div>
+
+<section class="legal-page">
+    <div class="legal-container">
+        <header class="legal-header">
+
+            <h1 class="legal-title">Договор<br><span class="outline">Публичная оферта</span></h1>
+            <p class="legal-date">Дата размещения: 28.12.2025</p>
+        </header>
+
+        <div class="legal-content-grid">
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">ОБЩИЕ ПОЛОЖЕНИЯ</h2>
+                    <span class="legal-num">01</span>
+                </div>
+                <div class="legal-body">
+                    <p>Настоящий документ является публичной офертой (ст. 437 ГК РФ).<br><b>Исполнитель:</b>
+                        Федичкин М.Ю. (самозанятый)<br>ИНН 690309357360</p>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">ПРЕДМЕТ ОФЕРТЫ</h2>
+                    <span class="legal-num">02</span>
+                </div>
+                <div class="legal-body">
+                    <p>Исполнитель оказывает услуги по разработке, сопровождению и технической реализации веб-продуктов.
+                        Детали фиксируются в договоре-заказе или техническом задании (ТЗ).</p>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">АКЦЕПТ ОФЕРТЫ</h2>
+                    <span class="legal-num">03</span>
+                </div>
+                <div class="legal-body">
+                    <p>Факт оплаты услуг или подписание ТЗ означает полное согласие с условиями данного договора.</p>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">ПОРЯДОК ОПЛАТЫ</h2>
+                    <span class="legal-num">04</span>
+                </div>
+                <div class="legal-body">
+                    <p>Оплата производится на банковские реквизиты Исполнителя. Исполнитель применяет налог на
+                        профессиональный доход (НПД).</p>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">СРОКИ РАБОТ</h2>
+                    <span class="legal-num">05</span>
+                </div>
+                <div class="legal-body">
+                    <p>Сроки устанавливаются индивидуально для кадого этапа работ (Design/Development) и фиксируются в
+                        графике проекта.</p>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">ОТВЕТСТВЕННОСТЬ</h2>
+                    <span class="legal-num">06</span>
+                </div>
+                <div class="legal-body">
+                    <p><b>Штрафные санкции:</b> Пеня 0,1% от суммы Заказа за день просрочки (но не более 3000 рублей на
+                        один Заказ).</p>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">ПРИЕМКА РАБОТ</h2>
+                    <span class="legal-num">07</span>
+                </div>
+                <div class="legal-body">
+                    <p>Работы передаются по Акту. У Заказчика есть 3 дня на проверку. При молчании работы считаются
+                        принятыми в полном объеме.</p>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">ГАРАНТИИ</h2>
+                    <span class="legal-num">08</span>
+                </div>
+                <div class="legal-body">
+                    <p>Бесплатное устранение багов в течение <b>30 календарных дней</b> после завершения проекта.</p>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">ОТКАЗ И РАСТОРЖЕНИЕ</h2>
+                    <span class="legal-num">09</span>
+                </div>
+                <div class="legal-body">
+                    <p>В случае отказа Заказчика от активной работы над проектом, внесенная предоплата возврату не
+                        подлежит.</p>
+                </div>
+            </div>
+
+            <div class="legal-item">
+                <div class="legal-item-header">
+                    <h2 class="legal-item-title">ПОРТФОЛИО</h2>
+                    <span class="legal-num">10</span>
+                </div>
+                <div class="legal-body">
+                    <p>Исполнитель вправе использовать результат работ в своем портфолио, если иное не запрещено
+                        соглашением NDA.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include 'components/footer.html' %}
+
+<script>
+    window.onscroll = function () {
+        var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        var scrolled = (winScroll / height) * 100;
+        document.getElementById("legalProgress").style.width = scrolled + "%";
+    };
+</script>
+{% endblock %}

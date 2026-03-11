@@ -1,0 +1,84 @@
+{% load static %}
+<!-- Footer Mega -->
+<footer class="site-footer reveal reveal-up footer-mega">
+    <div class="container footer-container">
+        <!-- Left: Massive Outline Brand -->
+        <div class="footer-brand-side">
+            <div class="brand-letters">
+                <span data-letter="S">S</span><span data-letter="A">A</span><span data-letter="L">L</span><span
+                    data-letter="E">E</span><span data-letter="S">S</span>
+                <span class="brand-space" aria-hidden="true"></span>
+                <span data-letter="E">E</span><span data-letter="N">N</span><span data-letter="G">G</span><span
+                    data-letter="I">I</span><span data-letter="N">N</span><span data-letter="E">E</span><span
+                    data-letter="E">E</span><span data-letter="R">R</span><span data-letter="I">I</span><span
+                    data-letter="N">N</span><span data-letter="G">G</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Centered Bottom Legal Bar -->
+    <div class="container margin-top-large">
+        <div class="footer-bottom-bar">
+            <div class="fbb-line">
+                <!-- Group 1: IP -->
+                <div class="legal-group lg-ip">
+                    <span class="legal-text">Федичкин М.Ю. (самозанятый), ИНН 690309357360</span>
+                </div>
+
+                <!-- Group 2: Copyright + Status -->
+                <div class="legal-group lg-status">
+                    <span class="copyright">&copy; 2025–2026 Sales Engineering</span>
+                    <span class="sep d-none d-md-inline">•</span>
+                    <a href="https://npd.nalog.ru/check-status/?inn=690309357360" target="_blank"
+                        class="status-link">Статус в реестре ФНС ↗</a>
+                </div>
+
+                <!-- Group 3: Docs + Social -->
+                <div class="legal-group lg-docs">
+                    <a href="{% url 'privacy' %}">Конфиденциальность</a>
+                    <span class="sep d-none d-md-inline">•</span>
+                    <a href="{% url 'terms' %}">Условия</a>
+                    <span class="sep d-none d-md-inline">•</span>
+                    <a href="{% url 'offer' %}">Оферта</a>
+                    <span class="sep d-none d-md-inline">•</span>
+                    <a href="https://t.me/SalesEng1neer1ng" target="_blank" rel="noopener" onclick="reachGoal('contact_tg_click')" aria-label="Telegram">Telegram</a>
+                    <span class="sep d-none d-md-inline">•</span>
+                    <a href="https://vk.ru/salesengineering" target="_blank" rel="noopener" onclick="reachGoal('contact_vk_click')" aria-label="ВКонтакте">ВКонтакте</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const brandLetters = document.querySelectorAll('.brand-letters span');
+        const footer = document.querySelector('.footer-mega');
+
+        const updateGravity = () => {
+            const footerRect = footer.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+
+            // Начинаем эффект, когда футер появляется в зоне видимости
+            if (footerRect.top < windowHeight) {
+                // Вычисляем прогресс появления футера (от 0 до 1)
+                const distanceToBottom = document.documentElement.scrollHeight - (window.pageYOffset + windowHeight);
+                // Если мы в самом низу, progress = 1. Если футер только показался, progress = 0.
+                const progress = Math.max(0, Math.min(1, 1 - (distanceToBottom / 300)));
+
+                brandLetters.forEach((letter, index) => {
+                    // Разные коэффициенты для каждой буквы (первая улетает выше всех)
+                    const baseOffset = (brandLetters.length - index) * 60;
+                    const currentOffset = baseOffset * (1 - progress);
+
+                    letter.style.transform = `translateY(${currentOffset}px)`;
+                    letter.style.opacity = 0.3 + (progress * 0.7);
+                });
+            }
+        };
+
+        window.addEventListener('scroll', updateGravity, { passive: true });
+        updateGravity();
+    });
+</script>

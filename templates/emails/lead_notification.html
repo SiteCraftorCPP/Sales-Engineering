@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #F5F5F7;
+            margin: 0;
+            padding: 20px;
+            color: #1D1D1F;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+        }
+
+        .header {
+            margin-bottom: 24px;
+            border-bottom: 1px solid #F0F0F0;
+            padding-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 800;
+            color: #000;
+            letter-spacing: -0.5px;
+        }
+
+        .date {
+            font-size: 12px;
+            color: #86868B;
+        }
+
+        .grid {
+            display: table;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .row {
+            display: table-row;
+        }
+
+        .col {
+            display: table-cell;
+            width: 50%;
+            padding-bottom: 20px;
+            vertical-align: top;
+        }
+
+        .label {
+            font-size: 11px;
+            color: #86868B;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            display: block;
+            letter-spacing: 0.02em;
+        }
+
+        .value {
+            font-size: 15px;
+            color: #1D1D1F;
+            font-weight: 500;
+        }
+
+        a {
+            color: #0071E3;
+            text-decoration: none;
+        }
+
+        .message-block {
+            margin-top: 10px;
+            padding-top: 20px;
+            border-top: 1px solid #F0F0F0;
+        }
+
+        .message-text {
+            font-size: 15px;
+            line-height: 1.5;
+            color: #1D1D1F;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">FRAMERLY</div>
+            <div class="date">Новая заявка</div>
+        </div>
+
+        <div class="grid">
+            <div class="row">
+                <div class="col">
+                    <span class="label">Имя</span>
+                    <div class="value">{{ lead.name }}</div>
+                </div>
+                <div class="col">
+                    <span class="label">Телефон</span>
+                    <div class="value"><a href="tel:{{ lead.phone }}">{{ lead.phone }}</a></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <span class="label">Email</span>
+                    <div class="value"><a href="mailto:{{ lead.email }}">{{ lead.email }}</a></div>
+                </div>
+                <div class="col">
+                    <!-- Можно добавить источник сюда, если нужно, или оставить пустым для симметрии -->
+                    <span class="label">Источник</span>
+                    <div class="value" style="color: #86868B;">{{ lead.get_source_display }}</div>
+                </div>
+            </div>
+        </div>
+
+        {% if lead.message %}
+        <div class="message-block">
+            <span class="label">Сообщение</span>
+            <div class="message-text">{{ lead.message }}</div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>

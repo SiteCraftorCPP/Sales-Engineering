@@ -1,0 +1,126 @@
+{% load static %}
+<header class="nav-bar" id="navBar">
+    <div class="container nav-inner">
+        <a href="{% url 'index' %}" class="nav-brand" aria-label="Sales Engineering — На главную">
+            <span class="nav-logo nav-logo-text">Sales Engineering</span>
+        </a>
+
+        <button class="burger-menu" id="burgerMenu" aria-label="Меню">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect class="line line-top" x="3" y="11" width="18" height="2" rx="1" fill="currentColor" />
+                <rect class="line line-bottom" x="3" y="11" width="18" height="2" rx="1" fill="currentColor" />
+
+
+
+
+            </svg>
+        </button>
+
+
+        <div class="nav-social">
+            <a href="https://vk.ru/salesengineering" target="_blank" rel="noopener noreferrer" aria-label="Мы ВКонтакте">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path
+                        d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.45 14.41h-1.4c-.46 0-.6-.37-1.42-1.19-.72-.69-1.04-.78-1.22-.78-.25 0-.32.07-.32.41v1.08c0 .29-.09.46-1.07.46-1.59 0-3.35-.96-4.59-2.75-1.86-2.54-2.37-4.45-2.37-4.84 0-.18.07-.35.41-.35h1.4c.31 0 .42.14.54.47.61 1.72 1.63 3.23 2.05 3.23.16 0 .23-.07.23-.48v-1.87c-.05-.87-.51-1.01-.51-1.34 0-.15.12-.29.32-.29h2.21c.26 0 .35.14.35.44v2.53c0 .26.11.35.19.35.16 0 .29-.09.57-.37 1.18-1.32 2.02-3.36 2.02-3.36.11-.23.25-.35.56-.35h1.4c.34 0 .41.17.34.44-.16.73-1.63 3.19-1.63 3.19-.13.21-.18.3 0 .53.13.18.56.55.85.88.53.6.94 1.11 1.05 1.46.11.35-.08.53-.43.53z" />
+                </svg>
+            </a>
+            <a href="https://t.me/SalesEng1neer1ng" target="_blank" rel="noopener noreferrer" aria-label="Мы в Telegram">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.67-.52.36-.99.53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.37-.49 1.02-.75 3.99-1.73 6.66-2.87 8-3.43 3.81-1.59 4.6-1.86 5.12-1.87.11 0 .37.03.54.17.14.12.18.27.2.38-.01.06.01.24 0 .38z" />
+                </svg>
+            </a>
+        </div>
+
+        <div class="nav-actions">
+            <a class="nav-cta cta-audit" href="#audit" aria-label="Заказать бесплатную консультацию">
+                <span>Консультация</span>
+                <span class="cta-badge badge-free">БЕСПЛАТНО</span>
+            </a>
+            <a class="nav-cta cta-calculate" href="#contact" aria-label="Запросить расчет стоимости проекта">
+                <span>Запросить расчёт</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- New Expanding Mobile Menu -->
+    <div class="nav-mobile-menu" id="navMobileMenu">
+        <div class="nav-mobile-menu-bg" aria-hidden="true"></div>
+        <div class="container mobile-menu-inner">
+            <div class="mobile-footer" style="--i:4">
+                <div class="mobile-social">
+                    <a href="https://vk.ru/salesengineering" target="_blank" rel="noopener noreferrer" aria-label="VK">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.45 14.41h-1.4c-.46 0-.6-.37-1.42-1.19-.72-.69-1.04-.78-1.22-.78-.25 0-.32.07-.32.41v1.08c0 .29-.09.46-1.07.46-1.59 0-3.35-.96-4.59-2.75-1.86-2.54-2.37-4.45-2.37-4.84 0-.18.07-.35.41-.35h1.4c.31 0 .42.14.54.47.61 1.72 1.63 3.23 2.05 3.23.16 0 .23-.07.23-.48v-1.87c-.05-.87-.51-1.01-.51-1.34 0-.15.12-.29.32-.29h2.21c.26 0 .35.14.35.44v2.53c0 .26.11.35.19.35.16 0 .29-.09.57-.37 1.18-1.32 2.02-3.36 2.02-3.36.11-.23.25-.35.56-.35h1.4c.34 0 .41.17.34.44-.16.73-1.63 3.19-1.63 3.19-.13.21-.18.3 0 .53.13.18.56.55.85.88.53.6.94 1.11 1.05 1.46.11.35-.08.53-.43.53z" />
+                        </svg>
+                    </a>
+                    <a href="https://t.me/SalesEng1neer1ng" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.67-.52.36-.99.53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.37-.49 1.02-.75 3.99-1.73 6.66-2.87 8-3.43 3.81-1.59 4.6-1.86 5.12-1.87.11 0 .37.03.54.17.14.12.18.27.2.38-.01.06.01.24 0 .38z" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="mobile-actions">
+                    <a class="mobile-cta cta-audit" href="#audit">
+                        КОНСУЛЬТАЦИЯ <span class="badge-free">БЕСПЛАТНО</span>
+                    </a>
+                    <a class="mobile-cta cta-calculate" href="#contact">
+                        ЗАПРОСИТЬ РАСЧЁТ
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+    /* Фон до линии; блок с кнопками выше и всегда влезает на маленьком экране. */
+    @media (max-width: 900px) {
+        .nav-bar.active .nav-mobile-menu {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+        .nav-bar.active .nav-mobile-menu .nav-mobile-menu-bg {
+            flex: 1 1 0;
+            min-height: 40vh;
+            max-height: 65vh;
+            background-image: url("{% static 'image/mobile fon.webp' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: none;
+        }
+        .nav-bar.active .nav-mobile-menu .mobile-menu-inner {
+            flex: 0 0 auto;
+            padding: 1rem 1.5rem 1.5rem;
+            justify-content: flex-start;
+            background: rgba(10, 10, 10, 0.98);
+        }
+        .nav-bar.active:not(.nav-bar--dark) .nav-mobile-menu .mobile-menu-inner {
+            background: rgba(255, 255, 255, 0.98);
+        }
+        .nav-bar.active .nav-mobile-menu .mobile-footer {
+            margin-top: 0;
+            padding-top: 1.25rem;
+        }
+        @media (max-height: 600px) {
+            .nav-bar.active .nav-mobile-menu .nav-mobile-menu-bg {
+                max-height: 45vh;
+            }
+            .nav-bar.active .nav-mobile-menu .mobile-menu-inner {
+                padding: 0.75rem 1.5rem 1rem;
+            }
+            .nav-bar.active .nav-mobile-menu .mobile-footer {
+                padding-top: 0.75rem;
+            }
+            .nav-bar.active .nav-mobile-menu .mobile-social {
+                margin-bottom: 1rem;
+            }
+            .nav-bar.active .nav-mobile-menu .mobile-actions {
+                gap: 8px;
+            }
+        }
+    }
+    </style>
+</header>

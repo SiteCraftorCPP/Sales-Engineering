@@ -1,0 +1,224 @@
+.process-snake {
+    padding: var(--site-pad-y) 0;
+    color: #F9FAFB;
+    overflow: hidden;
+    position: relative;
+    background:
+        /* vertical grid */
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        /* horizontal grid */
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        /* violet glow top-left */
+        radial-gradient(circle at 15% 0%, rgba(99, 102, 241, 0.20) 0%, transparent 55%),
+        /* violet glow bottom-right */
+        radial-gradient(circle at 100% 80%, rgba(139, 92, 246, 0.22) 0%, transparent 55%),
+        /* base dark background */
+        #05060D;
+    background-size:
+        80px 80px,
+        80px 80px,
+        100% 100%,
+        100% 100%,
+        auto;
+}
+
+.snake-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 60px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1)
+}
+
+.snake-header .section-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin: 0;
+    color: #FFFFFF;
+    letter-spacing: -0.02em
+}
+
+.snake-legend {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-mono, monospace);
+    font-size: .85rem;
+    color: rgba(249, 250, 251, 0.72);
+    text-transform: uppercase
+}
+
+.legend-dot {
+    width: 10px;
+    height: 10px;
+    background-color: #2563EB;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
+    animation: pulse 2s infinite
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+        transform: scale(1)
+    }
+
+    50% {
+        opacity: .5;
+        transform: scale(1.2)
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1)
+    }
+}
+
+.step-1 {
+    grid-column: 1;
+    grid-row: 1
+}
+
+.step-4 {
+    grid-column: 2;
+    grid-row: 1
+}
+
+.step-5 {
+    grid-column: 3;
+    grid-row: 1
+}
+
+.step-2 {
+    grid-column: 1;
+    grid-row: 2
+}
+
+.step-3 {
+    grid-column: 2;
+    grid-row: 2
+}
+
+.step-6 {
+    grid-column: 3;
+    grid-row: 2
+}
+
+.snake-step::after {
+    content: '';
+    position: absolute;
+    background-color: #E5E5E5;
+    z-index: 1;
+    transition: background-color .4s ease
+}
+
+.step-1::after {
+    left: 50%;
+    bottom: -42px;
+    width: 2px;
+    height: 44px
+}
+
+.step-2::after {
+    top: 50%;
+    right: -42px;
+    width: 44px;
+    height: 2px
+}
+
+.step-3::after {
+    left: 50%;
+    top: -42px;
+    width: 2px;
+    height: 44px
+}
+
+.step-4::after {
+    top: 50%;
+    right: -42px;
+    width: 44px;
+    height: 2px
+}
+
+.step-5::after {
+    left: 50%;
+    bottom: -42px;
+    width: 2px;
+    height: 44px
+}
+
+.step-1:hover::after,
+.step-2:hover~.step-1::after {
+    background-color: #000
+}
+
+.step-2:hover::after,
+.step-3:hover~.step-2::after {
+    background-color: #000
+}
+
+.step-3:hover::after,
+.step-4:hover~.step-3::after {
+    background-color: #000
+}
+
+.step-4:hover::after,
+.step-5:hover~.step-4::after {
+    background-color: #000
+}
+
+.step-5:hover::after,
+.step-6:hover~.step-5::after {
+    background-color: #000
+}
+
+@media(max-width:1024px) {
+    .snake-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        gap: 20px
+    }
+
+    .step-1,
+    .step-2,
+    .step-3,
+    .step-4,
+    .step-5,
+    .step-6 {
+        grid-column: auto;
+        grid-row: auto
+    }
+
+    .snake-step::after {
+        display: none
+    }
+
+    .snake-step:not(:last-child):after {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 50%;
+        bottom: -22px;
+        width: 1px;
+        height: 24px;
+        background-color: #E5E5E5;
+        top: auto;
+        right: auto;
+        transform: translateX(-50%)
+    }
+
+    .snake-step {
+        min-height: auto;
+        padding: 30px
+    }
+
+    .s-num {
+        font-size: 2.5rem
+    }
+
+    .snake-header .section-title {
+        font-size: 2.5rem
+    }
+}
