@@ -409,12 +409,12 @@
         }
 
         if (form) {
-            form.addEventListener('submit', function (e) {
+            function handleContactSubmit(e) {
                 e.preventDefault();
                 const loader = document.getElementById('contactLoader');
                 const success = document.getElementById('contactSuccess');
 
-                loader.style.display = 'flex';
+                if (loader) loader.style.display = 'flex';
 
                 fetch(form.action, {
                     method: 'POST',
@@ -423,24 +423,31 @@
                 })
                     .then(r => r.json())
                     .then(d => {
+                        if (loader) loader.style.display = 'none';
                         if (d.success) {
-                            reachGoal('form_project_submit');
-                            setTimeout(() => {
-                                loader.style.display = 'none';
+                            if (typeof reachGoal === 'function') {
+                                reachGoal('form_project_submit');
+                            }
+                            if (form) {
                                 form.style.opacity = '0';
                                 form.style.visibility = 'hidden';
-                                success.classList.add('visible');
-                            }, 800);
+                            }
+                            if (success) success.classList.add('visible');
                         } else {
-                            loader.style.display = 'none';
-                            alert('Error checking fields.');
+                            alert('Ошибка проверки полей. Попробуйте ещё раз.');
                         }
                     })
-                    .catch(e => {
-                        console.error(e);
-                        loader.style.display = 'none';
+                    .catch(err => {
+                        console.error(err);
+                        if (loader) loader.style.display = 'none';
+                        // Фоллбэк: пробуем обычную отправку формы без fetch,
+                        // чтобы обойти баги/блокировки браузера или антивируса.
+                        form.removeEventListener('submit', handleContactSubmit);
+                        form.submit();
                     });
-            });
+            }
+
+            form.addEventListener('submit', handleContactSubmit);
         }
     });
 </script>

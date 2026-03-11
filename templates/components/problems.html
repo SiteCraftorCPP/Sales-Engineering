@@ -871,7 +871,7 @@
 
             checkForm();
 
-            form.addEventListener('submit', function (e) {
+            function handleAuditSubmit(e) {
                 e.preventDefault();
                 var loader = document.getElementById('auditLoader');
                 var successMsg = document.getElementById('auditSuccess');
@@ -890,14 +890,20 @@
                             if (successMsg) successMsg.classList.add('visible');
                             if (window.reachGoal) window.reachGoal('form_audit_submit');
                         } else {
-                            alert('Ошибка отправки. Попробуйте еще раз.');
+                            alert('Ошибка отправки. Попробуйте ещё раз.');
                         }
                     })
-                    .catch(function () {
+                    .catch(function (err) {
+                        console.error(err);
                         if (loader) loader.style.display = 'none';
-                        alert('Произошла ошибка соединения.');
+                        // Фоллбэк: обычная отправка формы,
+                        // если fetch сломался/заблокирован.
+                        form.removeEventListener('submit', handleAuditSubmit);
+                        form.submit();
                     });
-            });
+            }
+
+            form.addEventListener('submit', handleAuditSubmit);
         }
 
         if (document.readyState === 'loading') {
