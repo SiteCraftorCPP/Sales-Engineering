@@ -276,9 +276,12 @@
             }
 
             // --- IMask Integration ---
-            const phoneMask = IMask(phoneInput, {
-                mask: '+{7} (000) 000-00-00'
-            });
+            let phoneMask = null;
+            if (typeof IMask !== 'undefined' && phoneInput) {
+                phoneMask = IMask(phoneInput, {
+                    mask: '+{7} (000) 000-00-00'
+                });
+            }
 
             let extraMask = null;
 
@@ -344,7 +347,7 @@
 
                     // Strict checks
                     if (val) {
-                        if (name === 'phone') {
+                        if (name === 'phone' && phoneMask) {
                             if (!phoneMask.masked.isComplete) isValid = false;
                         }
 
@@ -372,7 +375,9 @@
             });
 
             // Listen to mask accept
-            phoneMask.on('accept', validateForm);
+            if (phoneMask) {
+                phoneMask.on('accept', validateForm);
+            }
             if (extraMask) extraMask.on('accept', validateForm); // Re-bind in helper if needed, but input event handles change mostly correctly
 
 
