@@ -9,6 +9,8 @@ urlpatterns = [
     path('offer/', views.offer_agreement, name='offer'),
     path('thanks/', views.thanks, name='thanks'),
     path('robots.txt', TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
+    path('yandex_a39dd97b8925594e.html',
+         TemplateView.as_view(template_name="yandex_a39dd97b8925594e.html", content_type="text/html")),
     path('contact/ajax/', views.contact_ajax, name='contact_ajax'),
     path('consultation/ajax/', views.consultation_ajax, name='consultation_ajax'),
 
