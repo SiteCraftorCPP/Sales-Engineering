@@ -871,39 +871,11 @@
 
             checkForm();
 
-            function handleAuditSubmit(e) {
-                e.preventDefault();
-                var loader = document.getElementById('auditLoader');
-                var successMsg = document.getElementById('auditSuccess');
-                if (loader) loader.style.display = 'block';
-                fetch(form.action, {
-                    method: 'POST',
-                    body: new FormData(form),
-                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                })
-                    .then(function (r) { return r.json(); })
-                    .then(function (data) {
-                        if (loader) loader.style.display = 'none';
-                        if (data.success) {
-                            form.style.opacity = '0';
-                            form.style.pointerEvents = 'none';
-                            if (successMsg) successMsg.classList.add('visible');
-                            if (window.reachGoal) window.reachGoal('form_audit_submit');
-                        } else {
-                            alert('Ошибка отправки. Попробуйте ещё раз.');
-                        }
-                    })
-                    .catch(function (err) {
-                        console.error(err);
-                        if (loader) loader.style.display = 'none';
-                        // Фоллбэк: обычная отправка формы,
-                        // если fetch сломался/заблокирован.
-                        form.removeEventListener('submit', handleAuditSubmit);
-                        form.submit();
-                    });
-            }
-
-            form.addEventListener('submit', handleAuditSubmit);
+            form.addEventListener('submit', function () {
+                if (window.reachGoal) {
+                    window.reachGoal('form_audit_submit');
+                }
+            });
         }
 
         if (document.readyState === 'loading') {

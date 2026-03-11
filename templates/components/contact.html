@@ -409,45 +409,12 @@
         }
 
         if (form) {
-            function handleContactSubmit(e) {
-                e.preventDefault();
-                const loader = document.getElementById('contactLoader');
-                const success = document.getElementById('contactSuccess');
-
-                if (loader) loader.style.display = 'flex';
-
-                fetch(form.action, {
-                    method: 'POST',
-                    body: new FormData(form),
-                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                })
-                    .then(r => r.json())
-                    .then(d => {
-                        if (loader) loader.style.display = 'none';
-                        if (d.success) {
-                            if (typeof reachGoal === 'function') {
-                                reachGoal('form_project_submit');
-                            }
-                            if (form) {
-                                form.style.opacity = '0';
-                                form.style.visibility = 'hidden';
-                            }
-                            if (success) success.classList.add('visible');
-                        } else {
-                            alert('Ошибка проверки полей. Попробуйте ещё раз.');
-                        }
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        if (loader) loader.style.display = 'none';
-                        // Фоллбэк: пробуем обычную отправку формы без fetch,
-                        // чтобы обойти баги/блокировки браузера или антивируса.
-                        form.removeEventListener('submit', handleContactSubmit);
-                        form.submit();
-                    });
-            }
-
-            form.addEventListener('submit', handleContactSubmit);
+            // НИЧЕГО не перехватываем, просто трекаем отправку
+            form.addEventListener('submit', function () {
+                if (typeof reachGoal === 'function') {
+                    reachGoal('form_project_submit');
+                }
+            });
         }
     });
 </script>

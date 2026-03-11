@@ -138,18 +138,19 @@ def contact_ajax(request):
 
         lead.source = Lead.Source.MAIN
         lead.save()
-        
-        # Email — отправляем как раньше
+
         import threading
-        email_thread = threading.Thread(
+
+        # Email
+        threading.Thread(
             target=send_notifications,
             args=(lead, request.POST.get('form_type')),
-        )
-        email_thread.start()
+            daemon=True,
+        ).start()
 
-        # Telegram: только нужные поля формы
+        # Telegram
         comment = (request.POST.get('message') or "").strip()
-        telegram_thread = threading.Thread(
+        threading.Thread(
             target=notify_new_lead,
             kwargs={
                 "name": lead.name,
@@ -159,10 +160,12 @@ def contact_ajax(request):
                 "comment": comment,
             },
             daemon=True,
-        )
-        telegram_thread.start()
+        ).start()
 
-        return JsonResponse({'success': True, 'message': 'Спасибо! Мы свяжемся с вами в течение 2 часов.'})
+        is_ajax = request.headers.get("x-requested-with") == "XMLHttpRequest"
+        if is_ajax:
+            return JsonResponse({'success': True, 'message': 'Спасибо! Мы свяжемся с вами в течение 2 часов.'})
+        return redirect('thanks')
     else:
         return JsonResponse({'success': False, 'errors': form.errors}, status=400)
 
@@ -192,7 +195,6 @@ def consultation_ajax(request):
         description="\n".join(details),
     )
 
-    # Telegram: те же поля, что в форме
     import threading
     threading.Thread(
         target=notify_new_consultation,
@@ -206,7 +208,10 @@ def consultation_ajax(request):
         daemon=True,
     ).start()
 
-    return JsonResponse({'success': True, 'message': 'Консультация зафиксирована'})
+    is_ajax = request.headers.get("x-requested-with") == "XMLHttpRequest"
+    if is_ajax:
+        return JsonResponse({'success': True, 'message': 'Консультация зафиксирована'})
+    return redirect('thanks')
 
 
 def dashboard_login(request):
