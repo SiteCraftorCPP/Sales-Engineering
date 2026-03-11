@@ -875,10 +875,53 @@
 
             checkForm();
 
-            form.addEventListener('submit', function () {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                if (!submitBtn || submitBtn.disabled) return;
+
+                var loader = document.getElementById('auditLoader');
+                var successLayer = document.getElementById('auditSuccess');
+
                 if (window.reachGoal) {
                     window.reachGoal('form_audit_submit');
                 }
+
+                if (loader) {
+                    loader.style.display = 'flex';
+                }
+
+                var formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData
+                }).then(function (response) {
+                    return response.json();
+                }).then(function (data) {
+                    if (loader) {
+                        loader.style.display = 'none';
+                    }
+
+                    if (data && data.success) {
+                        if (successLayer) {
+                            successLayer.classList.add('visible');
+                        }
+                        form.reset();
+                        // после сброса пересчитаем валидацию
+                        checkForm();
+                    } else {
+                        console.error('Audit form error', data);
+                    }
+                }).catch(function (err) {
+                    if (loader) {
+                        loader.style.display = 'none';
+                    }
+                    console.error('Audit form submit failed', err);
+                });
             });
         }
 
