@@ -406,55 +406,30 @@
 
 .btn-audit-custom {
     margin-top: 25px;
-    background: #000;
-    color: #fff;
-    border: none;
+    background: #ffffff;
+    color: #111111;
+    border: 1px solid rgba(0, 0, 0, 0.12);
     padding: 18px;
-    border-radius: 12px;
+    border-radius: 100px;
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.5s ease;
-    /* Increased transition time */
+    transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     position: relative;
     z-index: 1;
-    overflow: visible;
-}
-
-.btn-audit-custom::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 2px;
-    background: var(--lava-gradient);
-    background-size: 200% 200%;
-    animation: lavaLamp 5s infinite linear;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
-    z-index: 2;
+    overflow: hidden;
 }
 
 .btn-audit-custom:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(99, 102, 241, 0.2);
-    color: #fff;
-}
-
-.btn-audit-custom:hover::after {
-    opacity: 1;
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
 }
 
 @media (max-width: 1024px) {
