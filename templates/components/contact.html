@@ -90,19 +90,13 @@
                             <span>ОТПРАВИТЬ ЗАЯВКУ</span>
                         </button>
 
-                        <div class="c-legal">
+                        <div class="c-legal" id="contactLegal">
                             Нажимая кнопку, вы соглашаетесь с <a href="{% url 'privacy' %}">политикой
                                 конфиденциальности</a>.
                         </div>
                     </form>
 
-                    <!-- Status Layers -->
-                    <div class="c-overlay" id="contactSuccess">
-                        <span class="c-big-icon">✓</span>
-                        <h3>ОТПРАВЛЕНО</h3>
-                        <p>Скоро свяжемся с вами</p>
-                    </div>
-
+                    <!-- Loader -->
                     <div class="c-loader" id="contactLoader">
                         <div class="c-spinner"></div>
                     </div>
@@ -431,7 +425,7 @@
 
         if (form) {
             const loader = document.getElementById('contactLoader');
-            const successLayer = document.getElementById('contactSuccess');
+            const legal = document.getElementById('contactLegal');
 
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
@@ -460,13 +454,13 @@
                         }
 
                         if (data && data.success) {
-                            if (successLayer) {
-                                successLayer.classList.add('visible');
-                            }
                             form.reset();
                             // после reset пересчитаем валидацию, чтобы кнопка снова стала неактивной
                             if (typeof validateForm === 'function') {
                                 validateForm();
+                            }
+                            if (legal) {
+                                legal.innerHTML = 'Отправлено. <span style="opacity:0.8">Скоро свяжемся с вами.</span>';
                             }
                         } else {
                             console.error('Contact form error', data);

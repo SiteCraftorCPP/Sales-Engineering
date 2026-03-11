@@ -107,7 +107,7 @@
                             </button>
                         </form>
 
-                        <div class="pe-success" id="auditSuccess">
+                        <div class="pe-success" id="auditSuccess" style="display:none;">
                             <span class="c-big-icon">✓</span>
                             <h3>ОТПРАВЛЕНО</h3>
                             <p>Скоро свяжемся с вами</p>
@@ -907,12 +907,13 @@
                     }
 
                     if (data && data.success) {
-                        if (successLayer) {
-                            successLayer.classList.add('visible');
-                        }
                         form.reset();
                         // после сброса пересчитаем валидацию
                         checkForm();
+                        if (successLayer) {
+                            successLayer.style.display = 'block';
+                            successLayer.innerHTML = '<h3>Отправлено</h3><p>Скоро свяжемся с вами</p>';
+                        }
                     } else {
                         console.error('Audit form error', data);
                     }
